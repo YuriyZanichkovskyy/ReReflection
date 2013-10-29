@@ -1,0 +1,22 @@
+﻿namespace N
+{
+  class A
+  {
+	private static string M;
+  }
+  
+  class C
+  {
+    static void Main(string[] args)
+    {
+      string s = A.|M|(0);
+    }
+  }
+}
+
+------------------------------------------------
+0: Cannot access private field 'M' here
+QUICKFIXES:
+Use Reflection to access field 'M'
+Make field 'M' public
+Make field 'M' internal

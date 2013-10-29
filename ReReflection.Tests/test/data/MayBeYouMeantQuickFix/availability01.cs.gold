@@ -1,0 +1,19 @@
+﻿namespace N
+{
+  class C
+  {
+    static void Main(string[] args)
+    {
+      object a = new object();
+	  object b = new object();
+	  a.|Eqls|(0)(b);
+    }
+  }
+}
+
+------------------------------------------------
+0: Cannot resolve symbol 'Eqls'
+QUICKFIXES:
+Change all 'Eqls'
+Change all local 'Eqls'
+May be you meant method 'Equals'

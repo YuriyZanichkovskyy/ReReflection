@@ -1,0 +1,25 @@
+﻿namespace N
+{
+  class A
+  {
+	private static string M(int a, float b)
+	{
+		return string.Empty;
+	}
+  }
+  
+  class C
+  {
+    static void Main(string[] args)
+    {
+      string s = A.|M|(0)(0, 0.1);
+    }
+  }
+}
+
+------------------------------------------------
+0: Cannot access private method 'M' here
+QUICKFIXES:
+Use Reflection to access method 'M'
+Make method 'M' public
+Make method 'M' internal

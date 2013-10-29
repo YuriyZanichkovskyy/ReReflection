@@ -1,0 +1,17 @@
+﻿using System.Reflection;
+
+namespace N
+{
+  class A
+  {
+	private static string M;
+  }
+  
+  class C
+  {
+    static void Main(string[] args)
+    {
+      string s = (string) typeof (A).InvokeMember("M", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField, null, null, null){caret};
+    }
+  }
+}

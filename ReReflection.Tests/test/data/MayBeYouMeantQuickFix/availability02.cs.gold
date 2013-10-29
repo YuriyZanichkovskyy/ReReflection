@@ -1,0 +1,19 @@
+﻿namespace N
+{
+  class C
+  {
+    static void Main(string[] args)
+    {
+      object a = new object();
+	  object b = new object();
+	  System.Object.|ReferneceEquals|(0)(a, b);
+    }
+  }
+}
+
+------------------------------------------------
+0: Cannot resolve symbol 'ReferneceEquals'
+QUICKFIXES:
+Change all 'ReferneceEquals'
+Change all local 'ReferneceEquals'
+May be you meant method 'ReferenceEquals'
