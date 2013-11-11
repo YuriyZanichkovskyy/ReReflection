@@ -45,9 +45,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DidYouMeanQuickFix.cs" />
+    <Compile Include="EnumExtensions.cs" />
+    <Compile Include="Highlightings\AmbigiousMemberMatchError.cs" />
+    <Compile Include="Highlightings\BindingFlagsCanBeSkippedWarning.cs" />
+    <Compile Include="Highlightings\IncorrectMakeGenericTypeHighlighting.cs" />
+    <Compile Include="QuickFixes\CorrectBindingFlagsQuickFix.cs" />
+    <Compile Include="QuickFixes\RemoveBindingFlagsQuickFix.cs" />
+    <Compile Include="ReflectedTypeResolveResult.cs" />
+    <Compile Include="ReflectionValidatorsRegistry.cs" />
+    <Compile Include="Validations\GetMethodMethodValidator.cs" />
+    <Compile Include="Validations\GetPropertyMethodValidator.cs" />
+    <Compile Include="Validations\MakeGenericTypeValidator.cs" />
+    <Compile Include="Validations\GetFieldMethodValidator.cs" />
+    <Compile Include="Validations\ReflectionMemberValidatorBase.cs" />
+    <Compile Include="Validations\ReflectionTypeMethodValidatorBase.cs" />
+    <Compile Include="Methods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AboutAction.cs" />
+    <Compile Include="Highlightings\ReflectionHighlightingBase.cs" />
+    <Compile Include="Highlightings\IncorrectBindingFlagsError.cs" />
+    <Compile Include="Highlightings\ReflectionMemberNotFoundError.cs" />
+    <Compile Include="ReflectionProblemsAnalyzer.cs" />
     <Compile Include="UseReflectionQuickFix.cs" />
+    <Compile Include="XmlDocUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Actions.xml" />

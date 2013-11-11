@@ -81,40 +81,45 @@ namespace ReReflection
             {
                 var language = referenceNode.Language;
                 string referenceName = _error.Reference.GetName();
-                var completableReference = ((IReferenceExpression)referenceNode.QualifierExpression).Reference;
+                var targetReference = referenceNode.QualifierExpression as IReferenceExpression;
 
-                var declaredElement = completableReference.Resolve().DeclaredElement;
-                var typeElement = declaredElement as ITypeElement;
-                bool isStaticReference = false;
-
-                if (typeElement == null)
+                if (targetReference != null)
                 {
-                    typeElement = declaredElement.Type().GetTypeElement<ITypeElement>();
-                }
-                else
-                {
-                    isStaticReference = true;
-                }
+                    var completableReference = targetReference.Reference;
 
-                var symbolFilters = new ISymbolFilter[]
+                    var declaredElement = completableReference.Resolve().DeclaredElement;
+                    var typeElement = declaredElement as ITypeElement;
+                    bool isStaticReference = false;
+
+                    if (typeElement == null)
+                    {
+                        typeElement = declaredElement.Type().GetTypeElement<ITypeElement>();
+                    }
+                    else
+                    {
+                        isStaticReference = true;
+                    }
+
+                    var symbolFilters = new ISymbolFilter[]
                                     {
                                         new AccessRightsFilter(completableReference.GetAccessContext()), 
                                         new StaticOrInstanceFilter(isStaticReference)
                                     };
 
-                var symbolTable = ResolveUtil.GetSymbolTableByTypeElement(typeElement, SymbolTableMode.FULL, referenceNode.GetPsiModule());
-                symbolTable = symbolTable.Filter(symbolFilters);
+                    var symbolTable = ResolveUtil.GetSymbolTableByTypeElement(typeElement, SymbolTableMode.FULL, referenceNode.GetPsiModule());
+                    symbolTable = symbolTable.Filter(symbolFilters);
 
-                IList<ReplaceWithSimilarName> result = new List<ReplaceWithSimilarName>();
-                symbolTable.ForAllSymbolInfos(s =>
-                                              {
-                                                  if (CalculateLevenshteinDistance(referenceName, s.GetDeclaredElement().ShortName) <= _threshold)
-                                                  {
-                                                      result.Add(new ReplaceWithSimilarName(referenceNode, s.GetDeclaredElement(), language));
-                                                  }
-                                              });
+                    IList<ReplaceWithSimilarName> result = new List<ReplaceWithSimilarName>();
+                    symbolTable.ForAllSymbolInfos(s =>
+                    {
+                        if (CalculateLevenshteinDistance(referenceName, s.GetDeclaredElement().ShortName) <= _threshold)
+                        {
+                            result.Add(new ReplaceWithSimilarName(referenceNode, s.GetDeclaredElement(), language));
+                        }
+                    });
 
-                return result;
+                    return result;
+                }
             }
 
             return Enumerable.Empty<ReplaceWithSimilarName>();

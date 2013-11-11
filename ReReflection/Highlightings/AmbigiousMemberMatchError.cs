@@ -1,0 +1,54 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using JetBrains.DocumentModel;
+using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Tree;
+
+namespace ReReflection.Highlightings
+{
+    [StaticSeverityHighlighting(Severity.ERROR, "Reflection", OverlapResolve = OverlapResolveKind.ERROR)]
+    public class AmbigiousMemberMatchError : ReflectionHighlightingBase, IHighlighting
+    {
+        private readonly IExpression _nameArgument;
+        private readonly DeclaredElementType _elementType;
+        private readonly string _suggestionMessage;
+
+        public AmbigiousMemberMatchError(IExpression nameArgument, DeclaredElementType elementType, string suggestionMessage)
+        {
+            _nameArgument = nameArgument;
+            _elementType = elementType;
+            _suggestionMessage = suggestionMessage;
+        }
+
+        public override bool IsValid()
+        {
+            return _nameArgument.IsValid();
+        }
+
+        public string ToolTip
+        {
+            get
+            {
+                string memberType = _elementType == null ? "member" : _elementType.ToString();
+                return string.Format("Ambigious {0} with name '{1}'. {2}", 
+                    memberType, _nameArgument.ConstantValue.Value, _suggestionMessage);
+            }
+        }
+
+        public string ErrorStripeToolTip
+        {
+            get
+            {
+                return ToolTip;
+            }
+        }
+
+        public override DocumentRange CalculateRange()
+        {
+            return _nameArgument.GetDocumentRange();
+        }
+    }
+}
