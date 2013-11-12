@@ -11,7 +11,7 @@ namespace N
   {
     static void Main(string[] args)
     {
-      string s = (string) typeof (A).InvokeMember("M", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField, null, null, null){caret};
+      string s = (string) typeof (A).InvokeMember("M", BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.GetField, null, null, null){caret};
     }
   }
 }

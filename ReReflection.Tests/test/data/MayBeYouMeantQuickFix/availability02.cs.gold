@@ -16,4 +16,4 @@
 QUICKFIXES:
 Change all 'ReferneceEquals'
 Change all local 'ReferneceEquals'
-May be you meant method 'ReferenceEquals'
+Did you mean method 'ReferenceEquals'?

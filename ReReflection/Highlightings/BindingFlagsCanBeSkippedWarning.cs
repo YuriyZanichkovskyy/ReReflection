@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Features.SolBuilderDuo.Engine.MsbuildExe.Filtering;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
@@ -13,7 +15,7 @@ using JetBrains.TextControl.DocumentMarkup;
 namespace ReReflection.Highlightings
 {
     [StaticSeverityHighlighting(Severity.SUGGESTION, "Reflection")]
-    public class BindingFlagsCanBeSkippedWarning : ReflectionHighlightingBase, IHighlighting, ICustomStyleHighlighting
+    public class BindingFlagsCanBeSkippedWarning : ReflectionHighlightingBase, IHighlighting
     {
         private readonly IMethod _method;
         private readonly IInvocationExpression _invocation;
@@ -66,8 +68,5 @@ namespace ReReflection.Highlightings
         {
             return _invocation.Arguments[1].GetDocumentRange();
         }
-
-        public HighlighterAttributes Attributes { get; private set; }
-        public int Layer { get; private set; }
     }
 }

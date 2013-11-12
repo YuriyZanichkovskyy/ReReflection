@@ -7,9 +7,12 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 
+[assembly: RegisterConfigurableSeverity("ReflectionAmbigiousMatch", null, "CodeInfo", "Some title", "other title", Severity.WARNING,  false)]
+
 namespace ReReflection.Highlightings
 {
-    [StaticSeverityHighlighting(Severity.ERROR, "Reflection", OverlapResolve = OverlapResolveKind.ERROR)]
+    //[StaticSeverityHighlighting(Severity.ERROR, "Reflection", OverlapResolve = OverlapResolveKind.ERROR)]
+    [ConfigurableSeverityHighlighting("ReflectionAmbigiousMatch", "CSHARP")]
     public class AmbigiousMemberMatchError : ReflectionHighlightingBase, IHighlighting
     {
         private readonly IExpression _nameArgument;

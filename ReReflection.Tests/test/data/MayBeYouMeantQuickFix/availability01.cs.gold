@@ -16,4 +16,4 @@
 QUICKFIXES:
 Change all 'Eqls'
 Change all local 'Eqls'
-May be you meant method 'Equals'
+Did you mean method 'Equals'?

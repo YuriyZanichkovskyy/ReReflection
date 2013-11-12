@@ -61,18 +61,18 @@ namespace ReReflection
             AddSystemReflectionNamespace(factory);
 
             
-            string flags = "BindingFlags.NonPublic";
+            BindingFlags flags = BindingFlags.NonPublic;
 
             if (modifiers.IsStatic)
             {
-                flags += "| BindingFlags.Static";
+                flags |= BindingFlags.Static;
             }
             else
             {
-                flags += "| BindingFlags.Instance";
+                flags |= BindingFlags.Instance;
             }
 
-            flags += "| " + GetInvokeMemberBindingFlag(_declaredElement, isAssign);
+            flags |= GetInvokeMemberBindingFlag(_declaredElement, isAssign);
 
             IExpression instanceExpression = modifiers.IsStatic ? factory.CreateExpression("null") : ((IReferenceExpression)accessExpression).QualifierExpression;
             IExpression argsExpression = factory.CreateExpression("null");
@@ -107,7 +107,7 @@ namespace ReReflection
             var reflectionExpression = factory.CreateExpression("typeof($0).InvokeMember(\"$1\", $2, null, $3, $4)", 
                 ((IClrDeclaredElement)_declaredElement).GetContainingType(),
                 _declaredElement.ShortName,
-                flags,
+                flags.GetFullString(),
                 instanceExpression,
                 argsExpression);
 
@@ -129,7 +129,7 @@ namespace ReReflection
             return factory.CreateArrayCreationExpression(arrayType, expression.ArrayInitializer);
         }
 
-        private string GetInvokeMemberBindingFlag(IDeclaredElement declaredElement, bool isAssign)
+        private BindingFlags GetInvokeMemberBindingFlag(IDeclaredElement declaredElement, bool isAssign)
         {
             BindingFlags flag;
             if (declaredElement is IMethod)
@@ -148,7 +148,7 @@ namespace ReReflection
             {
                 throw new ArgumentException(string.Format("Couldn't process element '{0}'", declaredElement));
             }
-            return string.Format("BindingFlags.{0}", flag);
+            return flag;
         }
 
         private void AddSystemReflectionNamespace(CSharpElementFactory factory)
