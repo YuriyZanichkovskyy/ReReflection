@@ -15,7 +15,8 @@ namespace ReReflection.Validations
 
         protected override bool ProcessAmbigiousMembers(ITypeMember[] ambigious, out ITypeMember resolveMember)
         {
-            throw new NotImplementedException();
+            resolveMember = null;
+            return false;
         }
     }
 }
