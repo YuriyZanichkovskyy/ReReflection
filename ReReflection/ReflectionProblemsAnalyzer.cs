@@ -18,6 +18,7 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using ReReflection.Highlightings;
+using ReReflection.Services;
 using ReReflection.Validations;
 
 namespace ReReflection
@@ -29,7 +30,7 @@ namespace ReReflection
         protected override void Run(IInvocationExpression element, ElementProblemAnalyzerData data, IHighlightingConsumer consumer)
         {
             IMethod method;
-            if (IsReflectionTypeMethod(element, out method))
+            if (ReflectedTypeHelper.IsReflectionTypeMethod(element, out method))
             {
                 var reflectedType = ResolveReflectedType(element);
                 var validator = ReflectionValidatorsRegistry.GetValidator(method);
@@ -62,7 +63,7 @@ namespace ReReflection
                     return new ReflectedTypeResolveResult(type, ReflectedTypeResolution.Exact); 
                 }
                 var methodInvocationExpression = referenceExpression.QualifierExpression as IInvocationExpression;
-                if (methodInvocationExpression != null && IsReflectionTypeMethod(invocationExpression, "MakeGenericType"))
+                if (methodInvocationExpression != null && ReflectedTypeHelper.IsReflectionTypeMethod(invocationExpression, "MakeGenericType"))
                 {
                     var resolvedType = ResolveReflectedType(methodInvocationExpression);
                     if (resolvedType.ResolvedAs == ReflectedTypeResolution.Exact)
@@ -73,33 +74,6 @@ namespace ReReflection
             }
 
             return ReflectedTypeResolveResult.NotResolved;
-        }
-
-        private bool IsReflectionTypeMethod(IInvocationExpression expression, string methodName)
-        {
-            IMethod method;
-            return IsReflectionTypeMethod(expression, out method) && method.ShortName == methodName;
-        }
-
-        private bool IsReflectionTypeMethod(IInvocationExpression expression, out IMethod method)
-        {
-            var reference = expression.InvocationExpressionReference;
-            var resolveResult = reference.Resolve();
-            if (resolveResult.ResolveErrorType == ResolveErrorType.OK)
-            {
-                method = resolveResult.DeclaredElement as IMethod;
-                if (method != null && GetContainingTypeName(method) == "System.Type")
-                    return true;
-            }
-
-            method = null;
-            return false;
-        }
-
-        private string GetContainingTypeName(IMethod method)
-        {
-            var type = method.GetContainingType();
-            return type == null ? null : type.GetClrName().FullName;
         }
     }
 }

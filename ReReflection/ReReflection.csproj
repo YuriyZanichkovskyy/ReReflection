@@ -44,6 +44,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Completion\GetMembersCompletion.cs" />
+    <Compile Include="Completion\GetMethodCompletion.cs" />
+    <Compile Include="Completion\GetPropertyCompletion.cs" />
+    <Compile Include="Completion\MethodSpecificCompletion.cs" />
+    <Compile Include="Completion\ReflectionMemberLookupItem.cs" />
     <Compile Include="Completion\ReflectionMethodsCompletionProvider.cs" />
     <Compile Include="DidYouMeanQuickFix.cs" />
     <Compile Include="EnumExtensions.cs" />
@@ -54,6 +59,7 @@
     <Compile Include="QuickFixes\RemoveBindingFlagsQuickFix.cs" />
     <Compile Include="ReflectedTypeResolveResult.cs" />
     <Compile Include="ReflectionValidatorsRegistry.cs" />
+    <Compile Include="Services\ReflectedTypeHelper.cs" />
     <Compile Include="Validations\GetMethodMethodValidator.cs" />
     <Compile Include="Validations\GetPropertyMethodValidator.cs" />
     <Compile Include="Validations\MakeGenericTypeValidator.cs" />
