@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="DidYouMeantQuickFixAvailabilityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionProblemAnalyzersTests.cs" />
     <Compile Include="UseReflectionQuickFixAvailabiityTests.cs" />
     <Compile Include="UseReflectionQuickFixTests.cs" />
   </ItemGroup>

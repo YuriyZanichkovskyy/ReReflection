@@ -1,0 +1,54 @@
+﻿using System;
+using System.Reflection;
+
+namespace N
+{
+
+ public class TestClass
+        {
+            public string TestPublicField;
+            private string TestPrivateField;
+
+            public int this[int index]
+            {
+                get
+                {
+                    return 0;
+                }
+            }
+
+            public int this[int index, int index2]
+            {
+                get
+                {
+                    return 0;
+                }
+            }
+        }
+
+  class C
+  {
+    static void Main(string[] args)
+    {
+		typeof(Math).GetMethod(|"Min"|(0));
+		typeof (object).GetMethod("GetHashCode", |BindingFlags.Instance | BindingFlags.Public|(1));
+		var f = typeof(TestClass).GetField("TestPublicField", |BindingFlags.Instance | BindingFlags.Public|(2));  
+
+        f = typeof(TestClass).GetField("TestPrivateField", |BindingFlags.Static | BindingFlags.NonPublic|(3)); 
+
+
+
+
+        var p = typeof(TestClass).GetProperty(|"TestPrivateField"|(4), BindingFlags.Instance | BindingFlags.NonPublic);
+        p = typeof(TestClass).GetProperty(|"Item"|(5), BindingFlags.Instance | BindingFlags.NonPublic);
+    }
+  }
+}
+
+---------------------------------------------------------
+(0): ReSharper Warning: Ambigious method with name 'Min'. 
+(1): ReSharper Suggestion: BindingFlags may be skipped.
+(2): ReSharper Suggestion: BindingFlags may be skipped.
+(3): ReSharper Underlined Error Highlighting: Incorrect BindingFlags specified for field 'TestPrivateField'. Should be 'BindingFlags.Instance | BindingFlags.NonPublic'
+(4): ReSharper Underlined Error Highlighting: Type Class:N.TestClass does not contain property with name 'TestPrivateField'
+(5): ReSharper Warning: Ambigious property with name 'Item'. 

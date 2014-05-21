@@ -1,0 +1,16 @@
+﻿namespace N
+{
+  class C
+  {
+    static void Main(string[] args)
+    {
+      var method = typeof(object).GetMethod(|"GetHash"|(0));
+	  var property = typeof(object).GetProperty(|"Test"|(1));
+	  var member = typeof(object).GetMember("_Test");
+    }
+  }
+}
+
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Type Class:System.Object does not contain method with name 'GetHash'
+(1): ReSharper Underlined Error Highlighting: Type Class:System.Object does not contain property with name 'Test'

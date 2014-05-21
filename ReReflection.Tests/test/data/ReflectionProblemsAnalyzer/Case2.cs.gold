@@ -1,0 +1,19 @@
+﻿using System;
+
+namespace N
+{
+  class C
+  {
+    static void Main(string[] args)
+    {
+	  |typeof(object).MakeGenericType|(0)();
+	  var a1 = typeof(Action<,>).MakeGenericType|()|(1);
+	  typeof(Action<,>).MakeGenericType|(typeof(object), typeof(object), typeof(object))|(2);
+    }
+  }
+}
+
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Type 'System.Object' is not a generic type.
+(1): ReSharper Underlined Error Highlighting: Incorrect count of type parameters for type System.Action`1.
+(2): ReSharper Underlined Error Highlighting: Incorrect count of type parameters for type System.Action`1.
