@@ -58,6 +58,7 @@ namespace ReReflection.Completion
                             || reflectedType.ResolvedAs == ReflectedTypeResolution.ExactMakeGeneric)
                         {
                             methodSpecificCompletion.ProcessMembers(context, collector, reflectedType.TypeElement.GetMembers());
+                            collector.AddFilter(new ReflectionMembersPreference());
                         }
                     }
                 }
@@ -68,6 +69,22 @@ namespace ReReflection.Completion
         private bool IsCompletionRegisteredForMethod(IMethod method, out MethodSpecificCompletion methodSpecificCompletion)
         {
             return _completionForMethods.TryGetValue(method.ShortName, out methodSpecificCompletion);
+        }
+
+        private class ReflectionMembersPreference : ILookupItemsPreference
+        {
+            public IEnumerable<ILookupItem> FilterItems(ICollection<ILookupItem> items)
+            {
+                return items.OfType<ReflectionMemberLookupItem>();
+            }
+
+            public int Order
+            {
+                get
+                {
+                    return 100;
+                }
+            }
         }
     }
 }
