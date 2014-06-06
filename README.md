@@ -3,9 +3,7 @@ ReReflection - ReSharper plugin for .NET Reflection API
 
 The plugin is aimed to simplify work with .NET reflection API by providing quick-fixes, problem, highlights and auto-completion items. 
 
-## Download
-
-No download link yet.
+##[Download](http://resharper-plugins.jetbrains.com/api/v2/package/ReReflection/0.0.1)
 
 ## Articles
 
