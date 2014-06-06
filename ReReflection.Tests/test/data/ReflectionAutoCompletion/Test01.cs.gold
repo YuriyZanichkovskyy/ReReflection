@@ -1,0 +1,350 @@
+﻿{caret}
+String.Concat
+String.Copy
+String.Empty
+String.Format
+String.Intern
+String.IsInterned
+String.Join
+AccessViolationException
+Action<>
+ActivationContext
+Activator
+AmbiguousMatchException
+AppDomain
+AppDomainInitializer
+AppDomainManager
+AppDomainManagerInitializationOptions
+AppDomainSetup
+AppDomainUnloadedException
+ApplicationException
+ApplicationId
+ApplicationIdentity
+ArgIterator
+ArgumentException
+ArgumentNullException
+ArgumentOutOfRangeException
+ArithmeticException
+Array
+ArraySegment<>
+ArrayTypeMismatchException
+Assembly
+AssemblyAlgorithmIdAttribute
+AssemblyCompanyAttribute
+AssemblyConfigurationAttribute
+AssemblyCopyrightAttribute
+AssemblyCultureAttribute
+AssemblyDefaultAliasAttribute
+AssemblyDelaySignAttribute
+AssemblyDescriptionAttribute
+AssemblyFileVersionAttribute
+AssemblyFlagsAttribute
+AssemblyInformationalVersionAttribute
+AssemblyKeyFileAttribute
+AssemblyKeyNameAttribute
+AssemblyLoadEventArgs
+AssemblyLoadEventHandler
+AssemblyName
+AssemblyNameFlags
+AssemblyNameProxy
+AssemblyProductAttribute
+AssemblyTitleAttribute
+AssemblyTrademarkAttribute
+AssemblyVersionAttribute
+AsyncCallback
+Attribute
+AttributeTargets
+AttributeUsageAttribute
+BadImageFormatException
+Base64FormattingOptions
+Binder
+BindingFlags
+BitConverter
+Boolean
+Buffer
+Byte
+C
+CLSCompliantAttribute
+CallingConventions
+CannotUnloadAppDomainException
+Char
+CharEnumerator
+Comparison<>
+Console
+ConsoleCancelEventArgs
+ConsoleCancelEventHandler
+ConsoleColor
+ConsoleKey
+ConsoleKeyInfo
+ConsoleModifiers
+ConsoleSpecialKey
+ConstructorInfo
+ContextBoundObject
+ContextMarshalException
+ContextStaticAttribute
+Convert
+Converter<>
+CrossAppDomainDelegate
+CustomAttributeData
+CustomAttributeFormatException
+CustomAttributeNamedArgument
+CustomAttributeTypedArgument
+DBNull
+DataMisalignedException
+DateTime
+DateTimeKind
+DateTimeOffset
+DayOfWeek
+Decimal
+DefaultMemberAttribute
+Delegate
+DivideByZeroException
+DllNotFoundException
+Double
+DuplicateWaitObjectException
+EntryPointNotFoundException
+Enum
+Environment
+EnvironmentVariableTarget
+Equals
+EventArgs
+EventAttributes
+EventHandler
+EventHandler<>
+EventInfo
+Exception
+ExceptionHandlingClause
+ExceptionHandlingClauseOptions
+ExecutionEngineException
+FieldAccessException
+FieldAttributes
+FieldInfo
+FlagsAttribute
+FormatException
+GC
+GCCollectionMode
+GCNotificationStatus
+GenericParameterAttributes
+Guid
+IAppDomainSetup
+IAsyncResult
+ICloneable
+IComparable
+IComparable<>
+IConvertible
+ICustomAttributeProvider
+ICustomFormatter
+IDisposable
+IEquatable<>
+IFormatProvider
+IFormattable
+IReflect
+IServiceProvider
+ImageFileMachine
+IndexOutOfRangeException
+InsufficientMemoryException
+Int16
+Int32
+Int64
+IntPtr
+InterfaceMapping
+InvalidCastException
+InvalidFilterCriteriaException
+InvalidOperationException
+InvalidProgramException
+LoaderOptimization
+LoaderOptimizationAttribute
+LocalDataStoreSlot
+LocalVariableInfo
+MTAThreadAttribute
+Main
+ManifestResourceInfo
+MarshalByRefObject
+Math
+MemberAccessException
+MemberFilter
+MemberInfo
+MemberTypes
+MethodAccessException
+MethodAttributes
+MethodBase
+MethodBody
+MethodImplAttributes
+MethodInfo
+Microsoft
+MidpointRounding
+Missing
+MissingFieldException
+MissingMemberException
+MissingMethodException
+Module
+ModuleHandle
+ModuleResolveEventHandler
+MulticastDelegate
+MulticastNotSupportedException
+N
+NonSerializedAttribute
+NotFiniteNumberException
+NotImplementedException
+NotSupportedException
+NullReferenceException
+Nullable
+Nullable<>
+ObfuscateAssemblyAttribute
+ObfuscationAttribute
+Object
+ObjectDisposedException
+ObsoleteAttribute
+OperatingSystem
+OperationCanceledException
+OutOfMemoryException
+OverflowException
+ParamArrayAttribute
+ParameterAttributes
+ParameterInfo
+ParameterModifier
+PlatformID
+PlatformNotSupportedException
+Pointer
+PortableExecutableKinds
+Predicate<>
+ProcessorArchitecture
+PropertyAttributes
+PropertyInfo
+Random
+RankException
+ReferenceEquals
+ReflectionTypeLoadException
+ResolveEventArgs
+ResolveEventHandler
+ResourceAttributes
+ResourceLocation
+RuntimeArgumentHandle
+RuntimeFieldHandle
+RuntimeMethodHandle
+RuntimeTypeHandle
+SByte
+STAThreadAttribute
+SerializableAttribute
+Single
+StackOverflowException
+String
+StringComparer
+StringComparison
+StringSplitOptions
+StrongNameKeyPair
+System
+SystemException
+TargetException
+TargetInvocationException
+TargetParameterCountException
+ThreadStaticAttribute
+TimeSpan
+TimeZone
+TimeoutException
+Type
+TypeAttributes
+TypeCode
+TypeDelegator
+TypeFilter
+TypeInitializationException
+TypeLoadException
+TypeUnloadedException
+TypedReference
+UInt16
+UInt32
+UInt64
+UIntPtr
+UnauthorizedAccessException
+UnhandledExceptionEventArgs
+UnhandledExceptionEventHandler
+ValueType
+Version
+Void
+WeakReference
+_AppDomain
+Abs(decimal)
+Abs(double)
+Abs(float)
+Abs(int)
+Abs(long)
+Abs(sbyte)
+Abs(short)
+AbsHelper(int)
+AbsHelper(long)
+AbsHelper(sbyte)
+AbsHelper(short)
+Acos(double)
+Asin(double)
+Atan(double)
+Atan2(double, double)
+BigMul(int, int)
+Ceiling(decimal)
+Ceiling(double)
+Cos(double)
+Cosh(double)
+DivRem(int, int, out int)
+DivRem(long, long, out long)
+Exp(double)
+Floor(decimal)
+Floor(double)
+IEEERemainder(double, double)
+InternalRound(double, int, MidpointRounding)
+InternalTruncate(double)
+Log(double)
+Log(double, double)
+Log10(double)
+Max(byte, byte)
+Max(decimal, decimal)
+Max(double, double)
+Max(float, float)
+Max(int, int)
+Max(long, long)
+Max(sbyte, sbyte)
+Max(short, short)
+Max(uint, uint)
+Max(ulong, ulong)
+Max(ushort, ushort)
+Min(byte, byte)
+Min(decimal, decimal)
+Min(double, double)
+Min(float, float)
+Min(int, int)
+Min(long, long)
+Min(sbyte, sbyte)
+Min(short, short)
+Min(uint, uint)
+Min(ulong, ulong)
+Min(ushort, ushort)
+Pow(double, double)
+Round(decimal)
+Round(decimal, MidpointRounding)
+Round(decimal, int)
+Round(decimal, int, MidpointRounding)
+Round(double)
+Round(double, MidpointRounding)
+Round(double, int)
+Round(double, int, MidpointRounding)
+Sign(decimal)
+Sign(double)
+Sign(float)
+Sign(int)
+Sign(long)
+Sign(sbyte)
+Sign(short)
+Sin(double)
+Sinh(double)
+SplitFractionDouble(double*)
+Sqrt(double)
+Tan(double)
+Tanh(double)
+Truncate(decimal)
+Truncate(double)
+args
+binder:
+bindingAttr:
+callConvention:
+global
+modifiers:
+name:
+types:

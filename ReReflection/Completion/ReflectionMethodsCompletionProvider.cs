@@ -63,6 +63,7 @@ namespace ReReflection.Completion
                     }
                 }
             }
+
             return base.AddLookupItems(context, collector);
         }
 
