@@ -75,6 +75,9 @@
     <Compile Include="UseReflectionQuickFix.cs" />
     <Compile Include="XmlDocUtil.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ReReflection.nuspec" />
+  </ItemGroup>
   <PropertyGroup>
     <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v8.0</ReSharperSdkTargets>
   </PropertyGroup>
