@@ -46,5 +46,5 @@ Provides possible choices for
 
 ### Auto-completion
 
-
+![](https://github.com/YuriyZanichkovskyy/ReReflection/raw/master/Images/auto_completion.gif)
 
