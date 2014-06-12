@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.DocumentModel;
+﻿using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
-namespace ReReflection.Highlightings
+namespace ReSharper.Reflection.Highlightings
 {
     [StaticSeverityHighlighting(Severity.ERROR, "Reflection", OverlapResolve = OverlapResolveKind.ERROR)]
     public class IncorrectMakeGenericTypeHighlighting : ReflectionHighlightingBase, IHighlighting

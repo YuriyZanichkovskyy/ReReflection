@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using ReReflection.Highlightings;
+﻿using JetBrains.ReSharper.Psi;
 
-namespace ReReflection.Validations
+namespace ReSharper.Reflection.Validations
 {
     public class GetFieldMethodValidator : ReflectionMemberValidatorBase
     {

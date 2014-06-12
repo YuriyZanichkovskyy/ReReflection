@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.Lookup;
-using JetBrains.ReSharper.Features.Browsing.Resources;
 using JetBrains.ReSharper.Psi;
 using JetBrains.Util;
 
-namespace ReReflection.Completion
+namespace ReSharper.Reflection.Completion
 {
     public class MethodSpecificCompletion
     {
@@ -59,7 +56,7 @@ namespace ReReflection.Completion
 
                 lookupItem.InitializeRanges(context.CompletionRanges, context.BasicContext);
                 lookupItem.OrderingString = string.Format("__A_MEMBER_{0}", member.ShortName); //
-                collector.AddAtDefaultPlace(lookupItem);
+                collector.AddToTop(lookupItem);
             }
         }
 

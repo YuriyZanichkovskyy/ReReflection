@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using JetBrains.ReSharper.IntentionsTests;
 using NUnit.Framework;
+using ReSharper.Reflection;
 
 namespace ReReflection.Tests
 {

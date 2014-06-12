@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using JetBrains.DocumentModel;
+﻿using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Features.SolBuilderDuo.Engine.MsbuildExe.Filtering;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.TextControl.DocumentMarkup;
 
-namespace ReReflection.Highlightings
+namespace ReSharper.Reflection.Highlightings
 {
     [StaticSeverityHighlighting(Severity.SUGGESTION, "Reflection")]
     public class BindingFlagsCanBeSkippedWarning : ReflectionHighlightingBase, IHighlighting

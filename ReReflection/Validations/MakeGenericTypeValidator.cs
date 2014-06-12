@@ -1,12 +1,10 @@
-﻿using System;
-using JetBrains.DocumentModel;
-using JetBrains.ReSharper.Daemon.CSharp.Errors;
+﻿using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
-using ReReflection.Highlightings;
+using ReSharper.Reflection.Highlightings;
 
-namespace ReReflection.Validations
+namespace ReSharper.Reflection.Validations
 {
     public class MakeGenericTypeValidator : ReflectionTypeMethodValidatorBase
     {

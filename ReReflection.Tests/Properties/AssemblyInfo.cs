@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using NUnit.Framework;
+using ReSharper.Reflection;
 
 /// <summary>
 /// Test environment. Must be in the global namespace.
@@ -22,7 +23,7 @@ public class TestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
     yield return Assembly.GetExecutingAssembly();
 
     #warning you need specify a type from the assembly being tested
-    yield return typeof(ReReflection.ReplaceWithSimilarName).Assembly;
+    yield return typeof(ReplaceWithSimilarName).Assembly;
   }
 
   public override void SetUp()

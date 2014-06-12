@@ -1,18 +1,15 @@
 using System;
-using System.Collections.Generic;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
-using JetBrains.ReSharper.Intentions.Extensibility.Menu;
-using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.TextControl;
 using JetBrains.Util;
-using ReReflection.Highlightings;
+using ReSharper.Reflection.Highlightings;
 
-namespace ReReflection.QuickFixes
+namespace ReSharper.Reflection.QuickFixes
 {
     [QuickFix]
     public sealed class CorrectBindingFlagsQuickFix : QuickFixBase

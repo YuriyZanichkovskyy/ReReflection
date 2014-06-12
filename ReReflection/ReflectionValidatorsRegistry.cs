@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using JetBrains.ReSharper.Psi;
-using ReReflection.Validations;
+using ReSharper.Reflection.Validations;
 
-namespace ReReflection
+namespace ReSharper.Reflection
 {
     public static class ReflectionValidatorsRegistry
     {
@@ -30,7 +27,7 @@ namespace ReReflection
             };
 
         public static ReflectionTypeMethodValidatorBase GetValidator(IMethod method)
-        {
+        {           
             Func<IMethod, ReflectionTypeMethodValidatorBase> validatorFactory;
             if (_registeredValidators.TryGetValue(method.XMLDocId, out validatorFactory))
             {

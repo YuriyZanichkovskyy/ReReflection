@@ -1,10 +1,6 @@
-﻿using System;
-using JetBrains.ReSharper.Daemon.CSharp.Errors;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using ReReflection.Highlightings;
+﻿using JetBrains.ReSharper.Psi;
 
-namespace ReReflection.Validations
+namespace ReSharper.Reflection.Validations
 {
     internal class GetPropertyMethodValidator : ReflectionMemberValidatorBase
     {

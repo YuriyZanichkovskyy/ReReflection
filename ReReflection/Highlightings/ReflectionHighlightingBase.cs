@@ -3,7 +3,7 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Daemon.Impl;
 
-namespace ReReflection.Highlightings
+namespace ReSharper.Reflection.Highlightings
 {
     public abstract class ReflectionHighlightingBase : CSharpHighlightingBase, IHighlighting, IHighlightingWithRange
     {

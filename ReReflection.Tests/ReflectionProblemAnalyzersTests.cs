@@ -6,7 +6,7 @@ using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp;
 using NUnit.Framework;
-using ReReflection.Highlightings;
+using ReSharper.Reflection.Highlightings;
 
 namespace ReReflection.Tests
 {

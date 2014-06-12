@@ -3,10 +3,9 @@ using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Resx.Utils;
 using JetBrains.ReSharper.Psi.Tree;
 
-namespace ReReflection.Highlightings
+namespace ReSharper.Reflection.Highlightings
 {
     [StaticSeverityHighlighting(Severity.ERROR, "Reflection", OverlapResolve = OverlapResolveKind.ERROR)]
     public class IncorrectBindingFlagsError : ReflectionHighlightingBase, IHighlighting

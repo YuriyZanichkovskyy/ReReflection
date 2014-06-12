@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using System.Reflection;
-using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
-using ReReflection.Highlightings;
+using ReSharper.Reflection.Highlightings;
 
-namespace ReReflection.Validations
+namespace ReSharper.Reflection.Validations
 {
     public abstract class ReflectionMemberValidatorBase : ReflectionTypeMethodValidatorBase
     {

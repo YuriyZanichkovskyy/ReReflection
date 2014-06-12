@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using JetBrains.Extension;
 
-namespace ReReflection
+namespace ReSharper.Reflection
 {
     public static class EnumExtensions
     {

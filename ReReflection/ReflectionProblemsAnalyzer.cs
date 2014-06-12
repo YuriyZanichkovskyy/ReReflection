@@ -1,27 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Windows.Forms.VisualStyles;
-using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Daemon.Stages.Dispatcher;
-using JetBrains.ReSharper.Feature.Services.CSharp.RearrangeCode;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Modules;
-using JetBrains.ReSharper.Psi.Resolve;
-using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.Daemon.CSharp.Stages;
-using ReReflection.Highlightings;
-using ReReflection.Services;
-using ReReflection.Validations;
+using ReSharper.Reflection.Highlightings;
+using ReSharper.Reflection.Services;
 
-namespace ReReflection
+namespace ReSharper.Reflection
 {
     [ElementProblemAnalyzer(new[] { typeof(IInvocationExpression) }, 
         HighlightingTypes = new[] { typeof(ReflectionMemberNotFoundError), typeof(IncorrectMakeGenericTypeHighlighting) })]

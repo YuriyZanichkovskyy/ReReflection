@@ -1,20 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using JetBrains.DocumentModel;
-using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion;
+﻿using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.ExpectedTypes;
-using JetBrains.ReSharper.Psi.Resources;
-using JetBrains.TextControl;
-using JetBrains.UI.Icons;
-using JetBrains.UI.RichText;
-using JetBrains.Util;
 
-namespace ReReflection.Completion
+namespace ReSharper.Reflection.Completion
 {
     public class ReflectionMemberLookupItem : CSharpDeclaredElementLookupItem
     {

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
@@ -13,10 +9,9 @@ using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Parsing;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.Util;
-using ReReflection.Services;
+using ReSharper.Reflection.Services;
 
-namespace ReReflection.Completion
+namespace ReSharper.Reflection.Completion
 {
     [Language(typeof(CSharpLanguage))]
     public class ReflectionMethodsCompletionProvider : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
@@ -42,7 +37,7 @@ namespace ReReflection.Completion
         }
 
         protected override bool AddLookupItems(CSharpCodeCompletionContext context, GroupedItemsCollector collector)
-        {
+        {           
             var node = context.NodeInFile;
             if (node.GetTokenType() == CSharpTokenType.LPARENTH && node.Parent is IInvocationExpression)
             {

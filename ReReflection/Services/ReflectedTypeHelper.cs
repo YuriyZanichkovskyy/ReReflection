@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Util;
 
-namespace ReReflection.Services
+namespace ReSharper.Reflection.Services
 {
     public static class ReflectedTypeHelper
     {
         public static ReflectedTypeResolveResult ResolveReflectedType(IInvocationExpression invocationExpression)
         {
+            //var finder = invocationExpression.GetPsiServices().Finder;
+            //finder.FindReferences();
+
             var referenceExpression = invocationExpression.InvokedExpression as IReferenceExpression;
 
             if (referenceExpression != null)
@@ -28,6 +28,8 @@ namespace ReReflection.Services
 
                     return new ReflectedTypeResolveResult(type, ReflectedTypeResolution.Exact);
                 }
+
+                //GetType, MakeArrayType, 
                 var methodInvocationExpression = referenceExpression.QualifierExpression as IInvocationExpression;
                 if (methodInvocationExpression != null && IsReflectionTypeMethod(invocationExpression, "MakeGenericType"))
                 {
@@ -37,6 +39,12 @@ namespace ReReflection.Services
                         return new ReflectedTypeResolveResult(resolvedType.TypeElement, ReflectedTypeResolution.ExactMakeGeneric);
                     }
                 }
+
+                //var typeReference = referenceExpression.QualifierExpression as IReferenceExpression;
+                //if (typeReference != null)
+                //{
+                    
+                //}
             }
 
             return ReflectedTypeResolveResult.NotResolved;

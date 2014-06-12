@@ -6,7 +6,7 @@ using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Feature.Services.Tests.CSharp.FeatureServices.CodeCompletion;
 using NUnit.Framework;
-using ReReflection.Completion;
+using ReSharper.Reflection.Completion;
 
 namespace ReReflection.Tests
 {

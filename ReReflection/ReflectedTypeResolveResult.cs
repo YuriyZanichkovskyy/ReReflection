@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi;
 
-namespace ReReflection
+namespace ReSharper.Reflection
 {
     public enum ReflectedTypeResolution
     {
@@ -24,8 +22,9 @@ namespace ReReflection
             ResolvedAs = ReflectedTypeResolution.NotResolved;
         }
 
-        public ReflectedTypeResolveResult(ITypeElement typeElement, ReflectedTypeResolution resolvedAs)
+        public ReflectedTypeResolveResult([NotNull] ITypeElement typeElement, ReflectedTypeResolution resolvedAs)
         {
+            if (typeElement == null) throw new ArgumentNullException("typeElement");
             TypeElement = typeElement;
             ResolvedAs = resolvedAs;
         }

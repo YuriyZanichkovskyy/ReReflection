@@ -2,9 +2,8 @@
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
-using IExpression = JetBrains.ReSharper.Psi.Tree.IExpression;
 
-namespace ReReflection.Highlightings
+namespace ReSharper.Reflection.Highlightings
 {
     [StaticSeverityHighlighting(Severity.ERROR, "Reflection", OverlapResolve = OverlapResolveKind.ERROR)]
     public class ReflectionMemberNotFoundError : ReflectionHighlightingBase, IHighlighting
