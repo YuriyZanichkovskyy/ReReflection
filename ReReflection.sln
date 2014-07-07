@@ -1,11 +1,19 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
+Microsoft Visual Studio Solution File, Format Version 12.00-+
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection", "ReReflection\ReReflection.csproj", "{A6F3C632-1348-41B7-A3E7-2A43416A5748}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.Tests", "ReReflection.Tests\ReReflection.Tests.csproj", "{3403270F-EBD2-437A-9242-175108E5B6E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDKs", "SDKs", "{AA9623BB-D4DD-4593-A75A-22A98C94453F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.R80", "ReReflection\ReReflection.R80.csproj", "{7A8ABD05-C7E2-40D3-AC86-70CFF3F5F621}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.R81", "ReReflection\ReReflection.R81.csproj", "{5FB0F146-B1DD-4A29-BE43-CBE434A210E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.Tests.R80", "ReReflection.Tests\ReReflection.Tests.R80.csproj", "{ECE62853-3E9E-480C-B06A-07DE9AA16EB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.Tests.R81", "ReReflection.Tests\ReReflection.Tests.R81.csproj", "{E95F40CF-EEC8-4852-AAE5-40CF77B81837}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
