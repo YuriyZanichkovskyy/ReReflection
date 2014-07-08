@@ -60,9 +60,9 @@
     <None Include="packages.R81.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ReReflection\ReReflection.csproj">
-      <Project>{a6f3c632-1348-41b7-a3e7-2a43416a5748}</Project>
-      <Name>ReReflection</Name>
+    <ProjectReference Include="..\ReReflection\ReReflection.R81.csproj">
+      <Project>{5fb0f146-b1dd-4a29-be43-cbe434a210e2}</Project>
+      <Name>ReReflection.R81</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
