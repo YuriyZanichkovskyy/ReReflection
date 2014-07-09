@@ -129,6 +129,7 @@ namespace ReSharper.Reflection.Services
 
         private static bool GetTypeParameters(IInvocationExpression invocation, out IType[] typeParameters)
         {
+            typeParameters = new IType[0];
             if (invocation.Arguments.Count != 0)
             {
                 ICSharpExpression[] expressions;
@@ -170,7 +171,6 @@ namespace ReSharper.Reflection.Services
                 }
             }
 
-            typeParameters = new IType[0];
             return true;
         }
 

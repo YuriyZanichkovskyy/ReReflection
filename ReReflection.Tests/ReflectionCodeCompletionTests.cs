@@ -45,5 +45,11 @@ namespace ReReflection.Tests
         {
             DoTestFiles("Test02.cs");
         }
+
+        [Test]
+        public void Test03()
+        {
+            DoTestFiles("Test03.cs");
+        }
     }
 }
