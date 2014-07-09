@@ -1,0 +1,15 @@
+﻿using System;
+
+namespace N
+{
+    static void Main(string[] args)
+    {
+      var p= |typeof(Math).MakeArrayType()|(0);
+      var p1= |typeof(Math).MakeArrayType(2)|(1);
+    }
+  }
+}
+
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Could not call MakeArrayType on static type.
+(1): ReSharper Underlined Error Highlighting: Could not call MakeArrayType on static type.

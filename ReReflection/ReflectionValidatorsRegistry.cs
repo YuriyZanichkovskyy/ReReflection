@@ -12,6 +12,10 @@ namespace ReSharper.Reflection
         private static readonly IDictionary<string, Func<IMethod, ReflectionTypeMethodValidatorBase>> _registeredValidators = 
             new Dictionary<string, Func<IMethod, ReflectionTypeMethodValidatorBase>>
             {
+                //MakeArrayType
+                { Methods.Of<Func<Type>>(() => _T.MakeArrayType).XmlDocId(), (m) => new MakeArrayTypeValidator(m) },
+                { Methods.Of<Func<int, Type>>(() => _T.MakeArrayType).XmlDocId(), (m) => new MakeArrayTypeValidator(m) },
+                
                 //MakeGenericType
                 { Methods.Of<Func<Type[], Type>>(() => _T.MakeGenericType).XmlDocId(), (m) => new MakeGenericTypeValidator(m) },
 
