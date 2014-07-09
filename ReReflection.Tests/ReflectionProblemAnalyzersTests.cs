@@ -43,5 +43,17 @@ namespace ReReflection.Tests
             //BindingFlags verification
             DoTestFiles("Case3.cs");
         }
+
+        [Test]
+        public void Test04()
+        {
+            DoTestFiles("Case4.cs");
+        }
+
+        [Test]
+        public void Test05()
+        {
+            DoTestFiles("Case5.cs");
+        }
     }
 }

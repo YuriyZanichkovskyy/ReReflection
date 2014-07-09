@@ -1,53 +1,177 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Application.Progress;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Resolve;
+using JetBrains.ReSharper.Psi.Search;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 
 namespace ReSharper.Reflection.Services
 {
     public static class ReflectedTypeHelper
     {
-        public static ReflectedTypeResolveResult ResolveReflectedType(IInvocationExpression invocationExpression)
-        {
-            //var finder = invocationExpression.GetPsiServices().Finder;
-            //finder.FindReferences();
+        private const int MaxResolutionRecursion = 5;
 
+        public static ReflectedTypeResolveResult ResolveReflectedType(IInvocationExpression invocationExpression)
+        {                      
             var referenceExpression = invocationExpression.InvokedExpression as IReferenceExpression;
 
             if (referenceExpression != null)
             {
-                var typeOfExpression = referenceExpression.QualifierExpression as ITypeofExpression;
-                if (typeOfExpression != null)
-                {
-                    var type = typeOfExpression.ArgumentType.GetTypeElement<ITypeElement>();
-                    if (type == null)
-                    {
-                        return ReflectedTypeResolveResult.NotResolved;
-                    }
+                return ResolveReflectedTypeInternal(referenceExpression.QualifierExpression);
+            }
 
-                    return new ReflectedTypeResolveResult(type, ReflectedTypeResolution.Exact);
+            return ReflectedTypeResolveResult.NotResolved;
+        }
+
+        private static ReflectedTypeResolveResult ResolveReflectedTypeInternal(ICSharpExpression expression, int recursion = 0)
+        {
+            if (MaxResolutionRecursion == recursion)
+                return ReflectedTypeResolveResult.NotResolved;
+
+            var typeOfExpression = expression as ITypeofExpression;
+            if (typeOfExpression != null)
+            {
+                var type = typeOfExpression.ArgumentType.GetTypeElement<ITypeElement>();
+                if (type == null)
+                {
+                    return ReflectedTypeResolveResult.NotResolved;
                 }
 
-                //GetType, MakeArrayType, 
-                var methodInvocationExpression = referenceExpression.QualifierExpression as IInvocationExpression;
-                if (methodInvocationExpression != null && IsReflectionTypeMethod(invocationExpression, "MakeGenericType"))
+                return new ReflectedTypeResolveResult(typeOfExpression.ArgumentType, ReflectedTypeResolution.Exact);
+            }
+
+            var methodInvocationExpression = expression as IInvocationExpression;
+            if (methodInvocationExpression != null)
+            {
+                if (IsReflectionTypeMethod(methodInvocationExpression, "MakeGenericType"))
                 {
                     var resolvedType = ResolveReflectedType(methodInvocationExpression);
                     if (resolvedType.ResolvedAs == ReflectedTypeResolution.Exact)
                     {
-                        return new ReflectedTypeResolveResult(resolvedType.TypeElement, ReflectedTypeResolution.ExactMakeGeneric);
+                        IType[] parameters;
+                        if (GetTypeParameters(methodInvocationExpression, out parameters))
+                        {
+                            return new ReflectedTypeResolveResult(TypeFactory.CreateType(resolvedType.TypeElement, parameters), 
+                                ReflectedTypeResolution.ExactMakeGeneric);
+                        }
                     }
                 }
+                else if (IsReflectionTypeMethod(methodInvocationExpression, "GetType"))
+                {
+                    var qualifier = ((IReferenceExpression) methodInvocationExpression.InvokedExpression).QualifierExpression;
+                    if (qualifier != null)
+                    {
+// ReSharper disable once AssignNullToNotNullAttribute
+                        return new ReflectedTypeResolveResult(qualifier.GetExpressionType().ToIType(), ReflectedTypeResolution.BaseClass);
+                    }
+                }
+                else if (IsReflectionTypeMethod(methodInvocationExpression, "MakeArrayType"))
+                {
+                    var resolvedType = ResolveReflectedType(methodInvocationExpression);
+                    if (resolvedType.ResolvedAs != ReflectedTypeResolution.NotResolved)
+                    {
+                        //TODO : do we care about rank at all???
+                        return new ReflectedTypeResolveResult(TypeFactory.CreateArrayType(resolvedType.Type, 1), ReflectedTypeResolution.Exact); 
+                    }
+                }
+            }
 
-                //var typeReference = referenceExpression.QualifierExpression as IReferenceExpression;
-                //if (typeReference != null)
-                //{
-                    
-                //}
+            var reference = expression as IReferenceExpression;
+            if (reference != null)
+            {
+                var resolveResult = reference.Reference.Resolve();
+                if (resolveResult.ResolveErrorType == ResolveErrorType.OK && resolveResult.DeclaredElement != null)
+                {
+                    //
+                    var assignmentExpressions = new List<ICSharpExpression>();
+                    var declarations = resolveResult.DeclaredElement.GetDeclarations().OfType<IInitializerOwnerDeclaration>().ToArray();
+                    if (declarations.Length > 0)
+                    {
+                        var expressionInitializer = (IExpressionInitializer)declarations[0].Initializer;
+                        if (expressionInitializer != null)
+                            assignmentExpressions.Add(expressionInitializer.Value);
+                    }
+
+                    var findResultConsumer = new FindResultConsumer(result =>
+                    {
+                        var resultReference = result as IFindResultReference;
+                        if (resultReference != null)
+                        {
+                            var assignment = resultReference.Reference.GetTreeNode().GetContainingNode<IAssignmentExpression>();
+                            if (assignment != null)
+                            {
+                                assignmentExpressions.Add(assignment.Source);
+                            }
+                        }
+                        return FindExecution.Continue;
+                    });
+
+
+                    var finder = expression.GetPsiServices().Finder;
+                    finder.FindReferences(resolveResult.DeclaredElement,
+                        resolveResult.DeclaredElement.GetSearchDomain(),
+                        findResultConsumer, NullProgressIndicator.Instance);
+
+                    if (assignmentExpressions.Count == 1)
+                    {
+                        return ResolveReflectedTypeInternal(assignmentExpressions[0], recursion + 1);
+                        //Try to resolve appropriate reference
+                    }
+                }
             }
 
             return ReflectedTypeResolveResult.NotResolved;
+        }
+
+        private static bool GetTypeParameters(IInvocationExpression invocation, out IType[] typeParameters)
+        {
+            if (invocation.Arguments.Count != 0)
+            {
+                ICSharpExpression[] expressions;
+                if (invocation.Arguments[0].Expression is IArrayCreationExpression)
+                {
+                    var initiallizer = ((IArrayCreationExpression) invocation.Arguments[0].Expression).ArrayInitializer;
+                    if (initiallizer != null)
+                    {
+                        expressions = initiallizer.ElementInitializers
+                            .Cast<IExpressionInitializer>()
+                            .Select(i => i.Value)
+                            .ToArray();
+                    }
+                    else
+                    {
+                        expressions = new ICSharpExpression[0];
+                    }
+                }
+                else
+                {
+                    expressions = invocation.Arguments.Select(a => a.Expression)
+                        .Cast<ICSharpExpression>()
+                        .ToArray();
+                }
+
+                typeParameters = new IType[expressions.Length];
+
+                for (int i = 0; i < expressions.Length; i++)
+                {
+                    var resolvedType = ResolveReflectedTypeInternal(expressions[i]);
+                    if (resolvedType.ResolvedAs == ReflectedTypeResolution.Exact)
+                    {
+                        typeParameters[i] = resolvedType.Type;
+                    }
+                    else
+                    {
+                        return false; //
+                    }
+                }
+            }
+
+            typeParameters = new IType[0];
+            return true;
         }
 
         public static bool IsReflectionTypeMethod(IInvocationExpression expression, string methodName)

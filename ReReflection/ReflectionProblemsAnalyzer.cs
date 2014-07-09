@@ -14,7 +14,7 @@ namespace ReSharper.Reflection
     public class ReflectionProblemsAnalyzer : ElementProblemAnalyzer<IInvocationExpression>
     {
         protected override void Run(IInvocationExpression element, ElementProblemAnalyzerData data, IHighlightingConsumer consumer)
-        {
+        {           
             IMethod method;
             if (ReflectedTypeHelper.IsReflectionTypeMethod(element, out method))
             {
@@ -33,33 +33,7 @@ namespace ReSharper.Reflection
 
         private ReflectedTypeResolveResult ResolveReflectedType(IInvocationExpression invocationExpression)
         {
-            var referenceExpression = invocationExpression.InvokedExpression as IReferenceExpression;
-
-            if (referenceExpression != null)
-            {
-                var typeOfExpression = referenceExpression.QualifierExpression as ITypeofExpression;
-                if (typeOfExpression != null)
-                {
-                    var type = typeOfExpression.ArgumentType.GetTypeElement<ITypeElement>();
-                    if (type == null)
-                    {
-                        return ReflectedTypeResolveResult.NotResolved;
-                    }
-
-                    return new ReflectedTypeResolveResult(type, ReflectedTypeResolution.Exact); 
-                }
-                var methodInvocationExpression = referenceExpression.QualifierExpression as IInvocationExpression;
-                if (methodInvocationExpression != null && ReflectedTypeHelper.IsReflectionTypeMethod(invocationExpression, "MakeGenericType"))
-                {
-                    var resolvedType = ResolveReflectedType(methodInvocationExpression);
-                    if (resolvedType.ResolvedAs == ReflectedTypeResolution.Exact)
-                    {
-                        return new ReflectedTypeResolveResult(resolvedType.TypeElement, ReflectedTypeResolution.ExactMakeGeneric);
-                    }
-                }
-            }
-
-            return ReflectedTypeResolveResult.NotResolved;
+            return ReflectedTypeHelper.ResolveReflectedType(invocationExpression);
         }
     }
 }

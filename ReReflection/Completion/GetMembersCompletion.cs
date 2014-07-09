@@ -22,9 +22,9 @@ namespace ReSharper.Reflection.Completion
         {
         }
 
-        protected override void ProvideMemberSpecificArguments(ITypeMember member, IList<string> arguments, bool requiresBindingFlags)
+        protected override void ProvideMemberSpecificArguments(DeclaredElementInstance<ITypeMember> member, IList<string> arguments, bool requiresBindingFlags)
         {
-            var elementType = member.GetElementType();
+            var elementType = member.Element.GetElementType();
             arguments.Insert(1, ElementTypeToMemberType[elementType].GetFullString());
         }
     }

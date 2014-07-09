@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Reflection;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.Util;
 
 namespace ReSharper.Reflection.Completion
@@ -17,50 +19,53 @@ namespace ReSharper.Reflection.Completion
 
         protected DeclaredElementType ExpectedMemberType { get; private set; }
 
-        public void ProcessMembers(CSharpCodeCompletionContext context, GroupedItemsCollector collector, IEnumerable<ITypeMember> members)
+        public void ProcessMembers(CSharpCodeCompletionContext context, GroupedItemsCollector collector, ISymbolTable symbols)
         {
-            ITypeMember[] filteredMembers;
-            if (ExpectedMemberType != null)
+            symbols.ForAllSymbolInfos(symbol =>
             {
-                filteredMembers = members.Where(m => m.GetElementType() == ExpectedMemberType).ToArray();
-            }
-            else
-            {
-                filteredMembers = members.ToArray();
-            }
-
-            var membersByName = filteredMembers.ToLookup(m => m.ShortName);
-
-            foreach (var member in filteredMembers)
-            {
-                string nameArgument = string.Format("\"{0}\"", member.ShortName);
-
-                IList<string> arguments = new List<string>();
-                arguments.Add(nameArgument); //always present
-
-                if (NeedsBindingFlags(member))
+                var member = symbol.GetDeclaredElement() as ITypeMember;
+                if (member != null && member.GetElementType() == ExpectedMemberType)
                 {
-                    arguments.Add(GetExpectedBindingFlags(member).GetFullString());
+                    string nameArgument = string.Format("\"{0}\"", symbol.ShortName);
+                    var declaredElementInstance = new DeclaredElementInstance<ITypeMember>((ITypeMember) symbol.GetDeclaredElement(), 
+                        symbol.GetSubstitution());
+
+                    if (!IncludeSymbol(declaredElementInstance))
+                        return;
+                    
+
+                    IList<string> arguments = new List<string>();
+                    arguments.Add(nameArgument); //always present
+
+                    if (NeedsBindingFlags(member))
+                    {
+                        arguments.Add(GetExpectedBindingFlags(member).GetFullString());
+                    }
+
+                    if (symbols.GetSymbolInfos(member.ShortName).HasMultiple()) //additional arguments needs to be provided
+                    {
+                        ProvideMemberSpecificArguments(declaredElementInstance, arguments, NeedsBindingFlags(member));
+                    }
+
+                    var lookupItem = new ReflectionMemberLookupItem(symbol.ShortName,
+                        string.Join(", ", arguments.ToArray()),
+                        declaredElementInstance,
+                        context,
+                        context.BasicContext.LookupItemsOwner);
+
+                    lookupItem.InitializeRanges(context.CompletionRanges, context.BasicContext);
+                    lookupItem.OrderingString = string.Format("__A_MEMBER_{0}", symbol.ShortName); //
+                    collector.AddToTop(lookupItem);
                 }
-
-                if (membersByName[member.ShortName].HasMultiple()) //additional arguments needs to be provided
-                {
-                    ProvideMemberSpecificArguments(member, arguments, NeedsBindingFlags(member));
-                }
-
-                var lookupItem = new ReflectionMemberLookupItem(member.ShortName,
-                    string.Join(", ", arguments.ToArray()),
-                    new DeclaredElementInstance<ITypeMember>(member),
-                    context,
-                    context.BasicContext.LookupItemsOwner);
-
-                lookupItem.InitializeRanges(context.CompletionRanges, context.BasicContext);
-                lookupItem.OrderingString = string.Format("__A_MEMBER_{0}", member.ShortName); //
-                collector.AddToTop(lookupItem);
-            }
+            });
         }
 
-        protected virtual void ProvideMemberSpecificArguments(ITypeMember member, IList<string> arguments, bool requiresBindingFlags)
+        protected virtual bool IncludeSymbol(DeclaredElementInstance<ITypeMember> member)
+        {
+            return true;
+        }
+
+        protected virtual void ProvideMemberSpecificArguments(DeclaredElementInstance<ITypeMember> member, IList<string> arguments, bool requiresBindingFlags)
         {
         }
 

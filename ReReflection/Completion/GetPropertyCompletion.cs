@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.CSharp;
+using JetBrains.ReSharper.Psi.Resolve;
 
 namespace ReSharper.Reflection.Completion
 {
@@ -11,11 +13,12 @@ namespace ReSharper.Reflection.Completion
         {
         }
 
-        protected override void ProvideMemberSpecificArguments(ITypeMember member, IList<string> arguments, bool requiresBindingFlags)
+        protected override void ProvideMemberSpecificArguments(DeclaredElementInstance<ITypeMember> member, IList<string> arguments, bool requiresBindingFlags)
         {
-            var property = (IProperty)member;
+            var property = (IProperty)member.Element;
             string argumentTypes = string.Format("new [] {{ {0} }}",
-                string.Join(", ", property.Parameters.Select(Typeof))); //
+                string.Join(", ", property.Parameters
+                .Select(p => Typeof(p, member.Substitution)))); //
             if (requiresBindingFlags)
             {
                 /*Use the following overload
@@ -29,7 +32,7 @@ namespace ReSharper.Reflection.Completion
 )
 )*/
                 arguments.Add("null"); //Binder
-                arguments.Add(Typeof(property.ReturnType)); //Return Type
+                arguments.Add(Typeof(property.ReturnType, member.Substitution)); //Return Type
                 arguments.Add(argumentTypes);
                 arguments.Add("null"); //ParameterModifiers //TODO
             }
@@ -39,14 +42,14 @@ namespace ReSharper.Reflection.Completion
             }
         }
 
-        private string Typeof(IParameter parameter)
+        private string Typeof(IParameter parameter, ISubstitution substitution)
         {
-            return string.Format("typeof({0})", parameter.Type);
+            return string.Format("typeof({0})", substitution.Apply(parameter.Type).GetPresentableName(CSharpLanguage.Instance));
         }
 
-        private string Typeof(IType type)
+        private string Typeof(IType type, ISubstitution substitution)
         {
-            return string.Format("typeof({0})", type);
+            return string.Format("typeof({0})", substitution.Apply(type).GetPresentableName(CSharpLanguage.Instance));
         }
     }
 }

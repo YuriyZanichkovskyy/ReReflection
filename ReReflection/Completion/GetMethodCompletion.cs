@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.CSharp;
+using JetBrains.ReSharper.Psi.Resolve;
 
 namespace ReSharper.Reflection.Completion
 {
@@ -11,13 +13,14 @@ namespace ReSharper.Reflection.Completion
         {
         }
 
-        protected override void ProvideMemberSpecificArguments(ITypeMember member, IList<string> arguments, bool requiresBindingFlags)
+        protected override void ProvideMemberSpecificArguments(DeclaredElementInstance<ITypeMember> member, IList<string> arguments, bool requiresBindingFlags)
         {
             //means that we have overloads
-            var method = (IMethod)member;
+            var method = (IMethod)member.Element;
             //TODO : doesn't work with out and ref arguments..., what to do with generic methods...
             string argumentTypes = string.Format("new [] {{ {0} }}",
-                string.Join(", ", method.Parameters.Select(Typeof))); //
+                string.Join(", ", method.Parameters
+                .Select(p => Typeof(p, member.Substitution)))); //
             if (requiresBindingFlags)
             {
                 /*Use the following overload
@@ -38,9 +41,15 @@ namespace ReSharper.Reflection.Completion
             }
         }
 
-        private string Typeof(IParameter parameter)
+        protected override bool IncludeSymbol(DeclaredElementInstance<ITypeMember> member)
         {
-            return string.Format("typeof({0})", parameter.Type);
+            var method = (IMethod)member.Element;
+            return method.TypeParameters.Count == 0;
+        }
+
+        private string Typeof(IParameter parameter, ISubstitution s)
+        {
+            return string.Format("typeof({0})", s.Apply(parameter.Type).GetPresentableName(CSharpLanguage.Instance));
         }
     }
 }

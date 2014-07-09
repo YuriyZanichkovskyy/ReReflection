@@ -1,6 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.Util;
 
 namespace ReSharper.Reflection
 {
@@ -15,6 +16,8 @@ namespace ReSharper.Reflection
     public class ReflectedTypeResolveResult
     {
         public ITypeElement TypeElement { get; private set; }
+        public IType Type { get; private set; }
+
         public static readonly ReflectedTypeResolveResult NotResolved = new ReflectedTypeResolveResult();
 
         private ReflectedTypeResolveResult()
@@ -22,10 +25,11 @@ namespace ReSharper.Reflection
             ResolvedAs = ReflectedTypeResolution.NotResolved;
         }
 
-        public ReflectedTypeResolveResult([NotNull] ITypeElement typeElement, ReflectedTypeResolution resolvedAs)
+        public ReflectedTypeResolveResult([NotNull] IType type, ReflectedTypeResolution resolvedAs)
         {
-            if (typeElement == null) throw new ArgumentNullException("typeElement");
-            TypeElement = typeElement;
+            if (type == null) throw new ArgumentNullException("type");
+            TypeElement = type.GetTypeElement<ITypeElement>();
+            Type = type;
             ResolvedAs = resolvedAs;
         }
 

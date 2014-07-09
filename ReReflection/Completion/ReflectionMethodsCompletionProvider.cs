@@ -8,6 +8,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Parsing;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using ReSharper.Reflection.Services;
 
@@ -52,7 +53,8 @@ namespace ReSharper.Reflection.Completion
                         if (reflectedType.ResolvedAs == ReflectedTypeResolution.Exact 
                             || reflectedType.ResolvedAs == ReflectedTypeResolution.ExactMakeGeneric)
                         {
-                            methodSpecificCompletion.ProcessMembers(context, collector, reflectedType.TypeElement.GetMembers());
+                            methodSpecificCompletion.ProcessMembers(context, collector, 
+                                reflectedType.Type.GetSymbolTable(context.PsiModule).Filter(new ExtensionMethodsFilter()));
                             collector.AddFilter(new ReflectionMembersPreference());
                         }
                     }
@@ -80,6 +82,19 @@ namespace ReSharper.Reflection.Completion
                 {
                     return 100;
                 }
+            }
+        }
+
+        private class ExtensionMethodsFilter : SimpleSymbolInfoFilter
+        {
+            public override bool Accepts(ISymbolInfo datum)
+            {
+                return datum.GetType().Name != "CSharpExtensionSymbolInfo";
+            }
+
+            public override ResolveErrorType ErrorType
+            {
+                get { return ResolveErrorType.NOT_RESOLVED; }
             }
         }
     }
