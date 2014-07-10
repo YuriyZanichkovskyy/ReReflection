@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using NUnit.Framework;
 using ReSharper.Reflection;
+using ReSharper.Reflection.QuickFixes;
 
 /// <summary>
 /// Test environment. Must be in the global namespace.
