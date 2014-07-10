@@ -71,6 +71,7 @@
     <Compile Include="Services\ReflectedTypeHelper.cs" />
     <Compile Include="Validations\GetMethodMethodValidator.cs" />
     <Compile Include="Validations\GetPropertyMethodValidator.cs" />
+    <Compile Include="Validations\MakeArrayTypeValidator.cs" />
     <Compile Include="Validations\MakeGenericTypeValidator.cs" />
     <Compile Include="Validations\GetFieldMethodValidator.cs" />
     <Compile Include="Validations\ReflectionMemberValidatorBase.cs" />
