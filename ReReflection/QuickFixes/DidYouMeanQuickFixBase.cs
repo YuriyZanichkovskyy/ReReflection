@@ -1,26 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
+using System.Text;
 using JetBrains.Annotations;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon.CSharp.Errors;
-using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Extensibility.Menu;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Filters;
 using JetBrains.ReSharper.Psi.Resolve;
-using JetBrains.ReSharper.Psi.Util;
 using JetBrains.TextControl;
 using JetBrains.Util;
-using ReSharper.Reflection.Highlightings;
 
-namespace ReSharper.Reflection
+namespace ReSharper.Reflection.QuickFixes
 {
     public class ReplaceWithSimilarName : BulbActionBase
     {
@@ -80,7 +74,7 @@ namespace ReSharper.Reflection
 
         protected virtual void ConfigureFilters(IList<ISymbolFilter> filters)
         {
-            
+
         }
 
         private IEnumerable<ReplaceWithSimilarName> GetMostSimilarNamesBulbActions()
@@ -117,7 +111,7 @@ namespace ReSharper.Reflection
                     }
                 });
 
-                return result; 
+                return result;
             }
 
             return Enumerable.Empty<ReplaceWithSimilarName>();
@@ -186,134 +180,6 @@ namespace ReSharper.Reflection
             public override bool Accepts(IDeclaredElement declaredElement, ISubstitution substitution)
             {
                 return _onlyStatic ? ((IModifiersOwner)declaredElement).IsStatic : !((IModifiersOwner)declaredElement).IsStatic;
-            }
-        }
-    }
-
-
-    [QuickFix]
-    public class DidYouMeanQuickFix : DidYouMeanQuickFixBase
-    {
-        private readonly NotResolvedError _error;
-        private IAccessContext _accessContext;
-
-        public DidYouMeanQuickFix(NotResolvedError error) 
-            : base((ICSharpExpression) error.Reference.GetTreeNode(), error.Reference.GetName())
-        {
-            _error = error;
-        }
-
-        protected override ITypeElement GetTypeElement(out bool? isStaticReference)
-        {
-            isStaticReference = false;
-            var referenceNode = _error.Reference.GetTreeNode() as IReferenceExpression;
-
-            if (referenceNode != null && referenceNode.QualifierExpression != null)
-            {
-                var targetReference = referenceNode.QualifierExpression as IReferenceExpression;
-
-                if (targetReference != null)
-                {
-                    var completableReference = targetReference.Reference;
-                    _accessContext = completableReference.GetAccessContext();
-
-                    var declaredElement = completableReference.Resolve().DeclaredElement;
-                    var typeElement = declaredElement as ITypeElement;
-
-                    if (typeElement == null)
-                    {
-                        typeElement = declaredElement.Type().GetTypeElement<ITypeElement>();
-                    }
-                    else
-                    {
-                        isStaticReference = true;
-                    }
-
-                    return typeElement;
-                }
-            }
-
-            return null;
-        }
-
-        protected override ICSharpExpression CreateReplacementExpression(ICSharpExpression expression, IDeclaredElement declaredElement)
-        {
-            CSharpElementFactory factory = CSharpElementFactory.GetInstance(expression);
-            return factory.CreateReferenceExpression("$0.$1",
-                ((IReferenceExpression)expression).QualifierExpression,
-                declaredElement.ShortName);
-        }
-
-        protected override void ConfigureFilters(IList<ISymbolFilter> filters)
-        {
-            base.ConfigureFilters(filters);
-            filters.Add(new AccessRightsFilter(_accessContext));
-        }
-    }
-
-    [QuickFix]
-    public class DidYouMeanQuickFix2 : DidYouMeanQuickFixBase
-    {
-        private readonly ReflectionMemberNotFoundError _error;
-
-        public DidYouMeanQuickFix2(ReflectionMemberNotFoundError error) 
-            : base((ICSharpExpression) error.NameArgument, error.NameArgumentValue)
-        {
-            _error = error;
-        }
-
-        protected override ITypeElement GetTypeElement(out bool? isStaticReference)
-        {
-            isStaticReference = null;
-            if (_error.BindingFlags.HasValue)
-            {
-                if ((_error.BindingFlags.Value & BindingFlags.Static) != 0 && (_error.BindingFlags.Value & BindingFlags.Instance) == 0)
-                {
-                    isStaticReference = true;
-                }
-                if ((_error.BindingFlags.Value & BindingFlags.Static) == 0 && (_error.BindingFlags.Value & BindingFlags.Instance) != 0)
-                {
-                    isStaticReference = false;
-                }
-            }
-            return _error.Type;
-        }
-
-        protected override ICSharpExpression CreateReplacementExpression(ICSharpExpression expression, IDeclaredElement declaredElement)
-        {
-            CSharpElementFactory factory = CSharpElementFactory.GetInstance(expression);
-            return factory.CreateExpression("\"$0\"", declaredElement.ShortName);
-        }
-
-        protected override void ConfigureFilters(IList<ISymbolFilter> filters)
-        {
-            base.ConfigureFilters(filters);
-            filters.Add(new ReflectedMembersSymbolsFilter(_error.ElementType));
-        }
-
-        private class ReflectedMembersSymbolsFilter : SimpleSymbolFilter
-        {
-            private readonly DeclaredElementType _elementType;
-
-            public ReflectedMembersSymbolsFilter(DeclaredElementType elementType)
-            {
-                _elementType = elementType;
-            }
-
-            public override ResolveErrorType ErrorType
-            {
-                get { return ResolveErrorType.NOT_RESOLVED; }
-            }
-
-            public override bool Accepts(IDeclaredElement declaredElement, ISubstitution substitution)
-            {
-                var method = declaredElement as IMethod;
-                if (method != null && method.IsExtensionMethod)
-                {
-                    return false;
-                }
-
-                return _elementType == null || declaredElement.GetElementType() == _elementType;
             }
         }
     }

@@ -59,13 +59,15 @@
     <Compile Include="Completion\MethodSpecificCompletion.cs" />
     <Compile Include="Completion\ReflectionMemberLookupItem.cs" />
     <Compile Include="Completion\ReflectionMethodsCompletionProvider.cs" />
-    <Compile Include="DidYouMeanQuickFix.cs" />
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="Highlightings\AmbigiousMemberMatchError.cs" />
     <Compile Include="Highlightings\BindingFlagsCanBeSkippedWarning.cs" />
     <Compile Include="Highlightings\IncorrectMakeArrayTypeHighlighting.cs" />
     <Compile Include="Highlightings\IncorrectMakeGenericTypeHighlighting.cs" />
     <Compile Include="QuickFixes\CorrectBindingFlagsQuickFix.cs" />
+    <Compile Include="QuickFixes\DidYouMeanForReflectionQuickFix.cs" />
+    <Compile Include="QuickFixes\DidYouMeanQuickFix.cs" />
+    <Compile Include="QuickFixes\DidYouMeanQuickFixBase.cs" />
     <Compile Include="QuickFixes\RemoveBindingFlagsQuickFix.cs" />
     <Compile Include="ReflectedTypeResolveResult.cs" />
     <Compile Include="ReflectionValidatorsRegistry.cs" />
