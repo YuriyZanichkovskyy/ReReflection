@@ -13,7 +13,10 @@
       The plugin is aimed to simplify work with .NET reflection API by providing quick-fixes, problem, highlights and auto-completion items. 
     </description>
     <releaseNotes>
-      
+      v.0.1.0
+      - Improved resolution logic for reflected type.
+      - Supported "Did You Mean" quick fix for reflection methods. 
+      - Validations for MakeArrayType and MakeGenericType.
     </releaseNotes>
     <dependencies>
       <dependency id="ReSharper" version="8.0" />
