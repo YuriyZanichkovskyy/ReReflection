@@ -64,6 +64,7 @@
     <Compile Include="EnumExtensions.cs" />
     <Compile Include="Highlightings\AmbigiousMemberMatchError.cs" />
     <Compile Include="Highlightings\BindingFlagsCanBeSkippedWarning.cs" />
+    <Compile Include="Highlightings\IncorrectMakeArrayTypeHighlighting.cs" />
     <Compile Include="Highlightings\IncorrectMakeGenericTypeHighlighting.cs" />
     <Compile Include="QuickFixes\CorrectBindingFlagsQuickFix.cs" />
     <Compile Include="QuickFixes\RemoveBindingFlagsQuickFix.cs" />
