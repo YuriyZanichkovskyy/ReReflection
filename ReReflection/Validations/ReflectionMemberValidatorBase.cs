@@ -37,7 +37,8 @@ namespace ReSharper.Reflection.Validations
 
             if (resolvedMembers.Length == 0)
             {
-                return new ReflectionMemberNotFoundError(nameArgument, ExpectedMemberType, resolvedType.TypeElement);
+                return new ReflectionMemberNotFoundError(nameArgument, ExpectedMemberType, resolvedType.TypeElement,
+                    ArgumentConstantValue<BindingFlags>(BindingFlagsArgument(invocation)));
             }
             if (resolvedMembers.Length > 1)
             {

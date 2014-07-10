@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using JetBrains.Annotations;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
@@ -16,28 +18,35 @@ using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.TextControl;
 using JetBrains.Util;
+using ReSharper.Reflection.Highlightings;
 
 namespace ReSharper.Reflection
 {
     public class ReplaceWithSimilarName : BulbActionBase
     {
-        private readonly IReferenceExpression _referenceExpression;
+        private readonly ICSharpExpression _referenceExpression;
         private readonly IDeclaredElement _element;
         private readonly PsiLanguageType _language;
+        private readonly Func<ICSharpExpression, IDeclaredElement, ICSharpExpression> _createReplacementExpression;
 
-        public ReplaceWithSimilarName(IReferenceExpression referenceExpression, IDeclaredElement element, PsiLanguageType language)
+        public ReplaceWithSimilarName([NotNull] ICSharpExpression referenceExpression,
+            [NotNull] IDeclaredElement element,
+            PsiLanguageType language,
+            [NotNull] Func<ICSharpExpression, IDeclaredElement, ICSharpExpression> createReplacementExpression)
         {
+            if (referenceExpression == null) throw new ArgumentNullException("referenceExpression");
+            if (element == null) throw new ArgumentNullException("element");
+            if (createReplacementExpression == null) throw new ArgumentNullException("createReplacementExpression");
+
             _referenceExpression = referenceExpression;
             _element = element;
             _language = language;
+            _createReplacementExpression = createReplacementExpression;
         }
 
         protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
         {
-            CSharpElementFactory factory = CSharpElementFactory.GetInstance(_referenceExpression);
-            _referenceExpression.ReplaceBy(factory.CreateReferenceExpression("$0.$1",
-                _referenceExpression.QualifierExpression,
-                _element.ShortName));
+            _referenceExpression.ReplaceBy(_createReplacementExpression(_referenceExpression, _element));
             return null;
         }
 
@@ -45,23 +54,23 @@ namespace ReSharper.Reflection
         {
             get
             {
-                return string.Format("Did you mean {0} '{1}'?", 
+                return string.Format("Did you mean {0} '{1}'?",
                     DeclaredElementPresenter.Format(_language, DeclaredElementPresenter.KIND_PRESENTER, _element),
                     DeclaredElementPresenter.Format(_language, DeclaredElementPresenter.NAME_PRESENTER, _element));
             }
         }
     }
 
-
-    [QuickFix]
-    public class DidYouMeanQuickFix : IQuickFix
+    public abstract class DidYouMeanQuickFixBase : IQuickFix
     {
-        private readonly NotResolvedError _error;
+        private readonly ICSharpExpression _expression;
+        private readonly string _referenceName;
         private const int _threshold = 2;
 
-        public DidYouMeanQuickFix(NotResolvedError error)
+        protected DidYouMeanQuickFixBase(ICSharpExpression expression, string referenceName)
         {
-            _error = error;
+            _expression = expression;
+            _referenceName = referenceName;
         }
 
         public IEnumerable<IntentionAction> CreateBulbItems()
@@ -69,57 +78,54 @@ namespace ReSharper.Reflection
             return GetMostSimilarNamesBulbActions().ToQuickFixAction();
         }
 
+        protected virtual void ConfigureFilters(IList<ISymbolFilter> filters)
+        {
+            
+        }
+
         private IEnumerable<ReplaceWithSimilarName> GetMostSimilarNamesBulbActions()
         {
-            var referenceNode = _error.Reference.GetTreeNode() as IReferenceExpression;
+            bool? isStaticReference;
+            ITypeElement typeElement = GetTypeElement(out isStaticReference);
+            var language = _expression.Language;
 
-            if (referenceNode != null && referenceNode.QualifierExpression != null)
+            if (typeElement != null)
             {
-                var language = referenceNode.Language;
-                string referenceName = _error.Reference.GetName();
-                var targetReference = referenceNode.QualifierExpression as IReferenceExpression;
-
-                if (targetReference != null)
+                var symbolFilters = new List<ISymbolFilter>();
+                if (isStaticReference.HasValue)
                 {
-                    var completableReference = targetReference.Reference;
-
-                    var declaredElement = completableReference.Resolve().DeclaredElement;
-                    var typeElement = declaredElement as ITypeElement;
-                    bool isStaticReference = false;
-
-                    if (typeElement == null)
-                    {
-                        typeElement = declaredElement.Type().GetTypeElement<ITypeElement>();
-                    }
-                    else
-                    {
-                        isStaticReference = true;
-                    }
-
-                    var symbolFilters = new ISymbolFilter[]
-                                    {
-                                        new AccessRightsFilter(completableReference.GetAccessContext()), 
-                                        new StaticOrInstanceFilter(isStaticReference)
-                                    };
-
-                    var symbolTable = ResolveUtil.GetSymbolTableByTypeElement(typeElement, SymbolTableMode.FULL, referenceNode.GetPsiModule());
-                    symbolTable = symbolTable.Filter(symbolFilters);
-
-                    IList<ReplaceWithSimilarName> result = new List<ReplaceWithSimilarName>();
-                    symbolTable.ForAllSymbolInfos(s =>
-                    {
-                        if (CalculateLevenshteinDistance(referenceName, s.GetDeclaredElement().ShortName) <= _threshold)
-                        {
-                            result.Add(new ReplaceWithSimilarName(referenceNode, s.GetDeclaredElement(), language));
-                        }
-                    });
-
-                    return result;
+                    symbolFilters.Add(new StaticOrInstanceFilter(isStaticReference.Value));
                 }
+
+                ConfigureFilters(symbolFilters);
+
+                var symbolTable = ResolveUtil.GetSymbolTableByTypeElement(typeElement, SymbolTableMode.FULL, _expression.GetPsiModule());
+                symbolTable = symbolTable.Filter(symbolFilters.ToArray());
+
+                IList<ReplaceWithSimilarName> result = new List<ReplaceWithSimilarName>();
+                HashSet<string> names = new HashSet<string>();
+                symbolTable.ForAllSymbolInfos(s =>
+                {
+                    var symbolDeclaredElement = s.GetDeclaredElement();
+                    if (!names.Contains(symbolDeclaredElement.ShortName))
+                    {
+                        names.Add(symbolDeclaredElement.ShortName);
+                        if (CalculateLevenshteinDistance(_referenceName, symbolDeclaredElement.ShortName) <= _threshold)
+                        {
+                            result.Add(new ReplaceWithSimilarName(_expression, s.GetDeclaredElement(), language, CreateReplacementExpression));
+                        }
+                    }
+                });
+
+                return result; 
             }
 
             return Enumerable.Empty<ReplaceWithSimilarName>();
         }
+
+        protected abstract ITypeElement GetTypeElement(out bool? isStaticReference);
+
+        protected abstract ICSharpExpression CreateReplacementExpression(ICSharpExpression expression, IDeclaredElement declaredElement);
 
         public bool IsAvailable(IUserDataHolder cache)
         {
@@ -157,9 +163,10 @@ namespace ReSharper.Reflection
             }
 
             return res[a.Length, b.Length];
+
         }
 
-        private class StaticOrInstanceFilter : SimpleSymbolFilter 
+        private class StaticOrInstanceFilter : SimpleSymbolFilter
         {
             private readonly bool _onlyStatic;
 
@@ -179,6 +186,134 @@ namespace ReSharper.Reflection
             public override bool Accepts(IDeclaredElement declaredElement, ISubstitution substitution)
             {
                 return _onlyStatic ? ((IModifiersOwner)declaredElement).IsStatic : !((IModifiersOwner)declaredElement).IsStatic;
+            }
+        }
+    }
+
+
+    [QuickFix]
+    public class DidYouMeanQuickFix : DidYouMeanQuickFixBase
+    {
+        private readonly NotResolvedError _error;
+        private IAccessContext _accessContext;
+
+        public DidYouMeanQuickFix(NotResolvedError error) 
+            : base((ICSharpExpression) error.Reference.GetTreeNode(), error.Reference.GetName())
+        {
+            _error = error;
+        }
+
+        protected override ITypeElement GetTypeElement(out bool? isStaticReference)
+        {
+            isStaticReference = false;
+            var referenceNode = _error.Reference.GetTreeNode() as IReferenceExpression;
+
+            if (referenceNode != null && referenceNode.QualifierExpression != null)
+            {
+                var targetReference = referenceNode.QualifierExpression as IReferenceExpression;
+
+                if (targetReference != null)
+                {
+                    var completableReference = targetReference.Reference;
+                    _accessContext = completableReference.GetAccessContext();
+
+                    var declaredElement = completableReference.Resolve().DeclaredElement;
+                    var typeElement = declaredElement as ITypeElement;
+
+                    if (typeElement == null)
+                    {
+                        typeElement = declaredElement.Type().GetTypeElement<ITypeElement>();
+                    }
+                    else
+                    {
+                        isStaticReference = true;
+                    }
+
+                    return typeElement;
+                }
+            }
+
+            return null;
+        }
+
+        protected override ICSharpExpression CreateReplacementExpression(ICSharpExpression expression, IDeclaredElement declaredElement)
+        {
+            CSharpElementFactory factory = CSharpElementFactory.GetInstance(expression);
+            return factory.CreateReferenceExpression("$0.$1",
+                ((IReferenceExpression)expression).QualifierExpression,
+                declaredElement.ShortName);
+        }
+
+        protected override void ConfigureFilters(IList<ISymbolFilter> filters)
+        {
+            base.ConfigureFilters(filters);
+            filters.Add(new AccessRightsFilter(_accessContext));
+        }
+    }
+
+    [QuickFix]
+    public class DidYouMeanQuickFix2 : DidYouMeanQuickFixBase
+    {
+        private readonly ReflectionMemberNotFoundError _error;
+
+        public DidYouMeanQuickFix2(ReflectionMemberNotFoundError error) 
+            : base((ICSharpExpression) error.NameArgument, error.NameArgumentValue)
+        {
+            _error = error;
+        }
+
+        protected override ITypeElement GetTypeElement(out bool? isStaticReference)
+        {
+            isStaticReference = null;
+            if (_error.BindingFlags.HasValue)
+            {
+                if ((_error.BindingFlags.Value & BindingFlags.Static) != 0 && (_error.BindingFlags.Value & BindingFlags.Instance) == 0)
+                {
+                    isStaticReference = true;
+                }
+                if ((_error.BindingFlags.Value & BindingFlags.Static) == 0 && (_error.BindingFlags.Value & BindingFlags.Instance) != 0)
+                {
+                    isStaticReference = false;
+                }
+            }
+            return _error.Type;
+        }
+
+        protected override ICSharpExpression CreateReplacementExpression(ICSharpExpression expression, IDeclaredElement declaredElement)
+        {
+            CSharpElementFactory factory = CSharpElementFactory.GetInstance(expression);
+            return factory.CreateExpression("\"$0\"", declaredElement.ShortName);
+        }
+
+        protected override void ConfigureFilters(IList<ISymbolFilter> filters)
+        {
+            base.ConfigureFilters(filters);
+            filters.Add(new ReflectedMembersSymbolsFilter(_error.ElementType));
+        }
+
+        private class ReflectedMembersSymbolsFilter : SimpleSymbolFilter
+        {
+            private readonly DeclaredElementType _elementType;
+
+            public ReflectedMembersSymbolsFilter(DeclaredElementType elementType)
+            {
+                _elementType = elementType;
+            }
+
+            public override ResolveErrorType ErrorType
+            {
+                get { return ResolveErrorType.NOT_RESOLVED; }
+            }
+
+            public override bool Accepts(IDeclaredElement declaredElement, ISubstitution substitution)
+            {
+                var method = declaredElement as IMethod;
+                if (method != null && method.IsExtensionMethod)
+                {
+                    return false;
+                }
+
+                return _elementType == null || declaredElement.GetElementType() == _elementType;
             }
         }
     }

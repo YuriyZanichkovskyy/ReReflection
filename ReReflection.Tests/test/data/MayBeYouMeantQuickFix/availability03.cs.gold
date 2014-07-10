@@ -1,0 +1,19 @@
+﻿using System;
+
+namespace N
+{
+  class C
+  {
+    static void Main(string[] args)
+    {
+      typeof(Math).GetMethod(|"Mx"|(0));
+    }
+  }
+}
+
+------------------------------------------------
+0: Type Class:System.Math does not contain method with name 'Mx'
+QUICKFIXES:
+Did you mean method 'Min'?
+Did you mean method 'Max'?
+Did you mean method 'Exp'?

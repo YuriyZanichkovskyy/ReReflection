@@ -7,6 +7,7 @@ using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Intentions.Test;
 using JetBrains.ReSharper.Psi;
 using NUnit.Framework;
+using ReSharper.Reflection.Highlightings;
 
 namespace ReReflection.Tests
 {
@@ -23,7 +24,7 @@ namespace ReReflection.Tests
 
         protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile psiSourceFile)
         {
-            return highlighting is NotResolvedError;
+            return highlighting is NotResolvedError || highlighting is ReflectionMemberNotFoundError;
         }
 
         [Test]
@@ -36,6 +37,12 @@ namespace ReReflection.Tests
         public void Availability02()
         {
             DoTestFiles("availability02.cs");
+        }
+
+        [Test]
+        public void Availability03()
+        {
+            DoTestFiles("availability03.cs");
         }
     }
 }

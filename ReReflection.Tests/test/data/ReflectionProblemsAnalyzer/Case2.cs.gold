@@ -14,6 +14,6 @@ namespace N
 }
 
 ---------------------------------------------------------
-(0): ReSharper Underlined Error Highlighting: Type 'System.Object' is not a generic type.
-(1): ReSharper Underlined Error Highlighting: Incorrect count of type parameters for type System.Action`1.
-(2): ReSharper Underlined Error Highlighting: Incorrect count of type parameters for type System.Action`1.
+(0): ReSharper Underlined Error Highlighting: Type 'object' is not a generic type.
+(1): ReSharper Underlined Error Highlighting: Incorrect count of type parameters for type Action<T>.
+(2): ReSharper Underlined Error Highlighting: Incorrect count of type parameters for type Action<T>.

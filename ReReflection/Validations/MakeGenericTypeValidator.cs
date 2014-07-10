@@ -33,7 +33,7 @@ namespace ReSharper.Reflection.Validations
                     resolvedType.Type.GetPresentableName(CSharpLanguage.Instance)));
             }
 
-            if (resolvedType.Type.IsResolved)
+            if (resolvedType.Type.IsResolved && !resolvedType.Type.IsOpenType)
             {
                 return new IncorrectMakeGenericTypeHighlighting(reference,
                     string.Format("Type '{0}' is closed generic type.", 
