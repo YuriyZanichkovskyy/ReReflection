@@ -149,20 +149,7 @@ namespace ReSharper.Reflection
 
         private void AddSystemReflectionNamespace(CSharpElementFactory factory)
         {
-            var importScope = CSharpReferenceBindingUtil.GetImportScope(_error.Reference);
-            var reflectionNamespace = GetReflectionNamespace(factory);
-            if (!UsingUtil.CheckAlreadyImported(importScope, reflectionNamespace))
-            {
-                UsingUtil.AddImportTo(importScope, reflectionNamespace);
-            }
-        }
-
-        private static INamespace GetReflectionNamespace(CSharpElementFactory factory)
-        {
-            var usingDirective = factory.CreateUsingDirective("System.Reflection");
-            var reference = usingDirective.ImportedSymbolName;
-            var reflectionNamespace = reference.Reference.Resolve().DeclaredElement as INamespace;
-            return reflectionNamespace;
+            ImportHelper.AddMissingNamespaceImport(_error.Reference, factory, "System.Reflection");
         }
 
         public override string Text

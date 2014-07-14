@@ -46,9 +46,9 @@ namespace N
 }
 
 ---------------------------------------------------------
-(0): ReSharper Warning: Ambigious method with name 'Min'. 
+(0): ReSharper Warning: Ambigious method with name 'Min'. Use GetMethod overload with argument types specified.
 (1): ReSharper Suggestion: BindingFlags may be skipped.
 (2): ReSharper Suggestion: BindingFlags may be skipped.
 (3): ReSharper Underlined Error Highlighting: Incorrect BindingFlags specified for field 'TestPrivateField'. Should be 'BindingFlags.Instance | BindingFlags.NonPublic'
 (4): ReSharper Underlined Error Highlighting: Type Class:N.TestClass does not contain property with name 'TestPrivateField'
-(5): ReSharper Warning: Ambigious property with name 'Item'. 
+(5): ReSharper Warning: Ambigious property with name 'Item'. Use GetProperty overload with indexer argument types specified.

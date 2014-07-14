@@ -89,7 +89,8 @@ namespace ReSharper.Reflection.Completion
         {
             public override bool Accepts(ISymbolInfo datum)
             {
-                return datum.GetType().Name != "CSharpExtensionSymbolInfo";
+                var method = datum.GetDeclaredElement() as IMethod;
+                return method == null || !method.IsExtensionMethod;
             }
 
             public override ResolveErrorType ErrorType

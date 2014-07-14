@@ -9,8 +9,8 @@ using ReSharper.Reflection.Services;
 
 namespace ReSharper.Reflection
 {
-    [ElementProblemAnalyzer(new[] { typeof(IInvocationExpression) }, 
-        HighlightingTypes = new[] { typeof(ReflectionMemberNotFoundError), typeof(IncorrectMakeGenericTypeHighlighting) })]
+    //[ElementProblemAnalyzer(new[] { typeof(IInvocationExpression) }, 
+    //    HighlightingTypes = new[] { typeof(ReflectionMemberNotFoundError), typeof(IncorrectMakeGenericTypeHighlighting) })]
     public class ReflectionProblemsAnalyzer : ElementProblemAnalyzer<IInvocationExpression>
     {
         protected override void Run(IInvocationExpression element, ElementProblemAnalyzerData data, IHighlightingConsumer consumer)

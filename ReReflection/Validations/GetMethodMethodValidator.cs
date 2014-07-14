@@ -14,5 +14,10 @@ namespace ReSharper.Reflection.Validations
             resolveMember = null;
             return false;
         }
+
+        protected override string GetAmbigiuityResolutionSuggestion()
+        {
+            return "Use GetMethod overload with argument types specified.";
+        }
     }
 }

@@ -1,9 +1,15 @@
 ﻿using System.Linq;
 using System.Reflection;
+using JetBrains.ActivityCollector;
+using JetBrains.ReSharper.Features.Browsing.Resources;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
+using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.Util;
 using ReSharper.Reflection.Highlightings;
+using ReSharper.Reflection.ReferenceProviders;
 
 namespace ReSharper.Reflection.Validations
 {
@@ -26,6 +32,8 @@ namespace ReSharper.Reflection.Validations
             return base.CanValidate(reflectedType) && reflectedType.ResolvedAs != ReflectedTypeResolution.BaseClass;
         }
 
+        public static readonly Key<ResolveResultWithInfo> ResolvedReflectedMemberArgumentReference = new Key<ResolveResultWithInfo>("ResolveResultWithInfo");
+
         public override ReflectionHighlightingBase Validate(ReflectedTypeResolveResult resolvedType, IInvocationExpression invocation)
         {
             
@@ -44,12 +52,19 @@ namespace ReSharper.Reflection.Validations
             {
                 if (!ProcessAmbigiousMembers(resolvedMembers, out resolvedMember))
                 {
+                    nameArgument.UserData.PutData(ReflectedMemberReference.Key,
+                    new ReflectedMemberReference(nameArgument,
+                        new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResult(resolvedMembers), ResolveErrorType.MULTIPLE_CANDIDATES), resolvedType.TypeElement));
                     return new AmbigiousMemberMatchError(nameArgument, ExpectedMemberType, GetAmbigiuityResolutionSuggestion());
                 }
             }
             else
             {
                 resolvedMember = resolvedMembers[0];
+
+                nameArgument.UserData.PutData(ReflectedMemberReference.Key,
+                    new ReflectedMemberReference(nameArgument,
+                        new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResult(resolvedMember), ResolveErrorType.OK), resolvedType.TypeElement));
                 return ValidateBindingFlags(resolvedType.TypeElement, resolvedMember, invocation)
                        ?? ValidateCore(resolvedType.TypeElement, resolvedMember, invocation);
             }

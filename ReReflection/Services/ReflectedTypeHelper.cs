@@ -74,7 +74,6 @@ namespace ReSharper.Reflection.Services
                     var resolvedType = ResolveReflectedType(methodInvocationExpression);
                     if (resolvedType.ResolvedAs != ReflectedTypeResolution.NotResolved)
                     {
-                        //TODO : do we care about rank at all???
                         return new ReflectedTypeResolveResult(TypeFactory.CreateArrayType(resolvedType.Type, 1), ReflectedTypeResolution.Exact); 
                     }
                 }
