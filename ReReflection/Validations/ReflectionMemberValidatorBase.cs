@@ -9,7 +9,7 @@ using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
 using ReSharper.Reflection.Highlightings;
-using ReSharper.Reflection.ReferenceProviders;
+using ReSharper.Reflection.Search;
 
 namespace ReSharper.Reflection.Validations
 {
@@ -31,8 +31,6 @@ namespace ReSharper.Reflection.Validations
         {
             return base.CanValidate(reflectedType) && reflectedType.ResolvedAs != ReflectedTypeResolution.BaseClass;
         }
-
-        public static readonly Key<ResolveResultWithInfo> ResolvedReflectedMemberArgumentReference = new Key<ResolveResultWithInfo>("ResolveResultWithInfo");
 
         public override ReflectionHighlightingBase Validate(ReflectedTypeResolveResult resolvedType, IInvocationExpression invocation)
         {

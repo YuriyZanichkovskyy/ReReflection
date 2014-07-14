@@ -65,13 +65,19 @@
     <Compile Include="Highlightings\BindingFlagsCanBeSkippedWarning.cs" />
     <Compile Include="Highlightings\IncorrectMakeArrayTypeHighlighting.cs" />
     <Compile Include="Highlightings\IncorrectMakeGenericTypeHighlighting.cs" />
+    <Compile Include="ImportHelper.cs" />
     <Compile Include="QuickFixes\CorrectBindingFlagsQuickFix.cs" />
     <Compile Include="QuickFixes\DidYouMeanForReflectionQuickFix.cs" />
     <Compile Include="QuickFixes\DidYouMeanQuickFix.cs" />
     <Compile Include="QuickFixes\DidYouMeanQuickFixBase.cs" />
     <Compile Include="QuickFixes\RemoveBindingFlagsQuickFix.cs" />
     <Compile Include="ReflectedTypeResolveResult.cs" />
+    <Compile Include="ReflectionMethodsValidationStage.cs" />
     <Compile Include="ReflectionValidatorsRegistry.cs" />
+    <Compile Include="Search\ReflectedMemberReference.cs" />
+    <Compile Include="Search\ReflectedMemberReferenceFactory.cs" />
+    <Compile Include="Search\ReflectedMemberReferenceProviderFactory.cs" />
+    <Compile Include="Search\ReflectedMemberSearcherFactory.cs" />
     <Compile Include="Services\ReflectedTypeHelper.cs" />
     <Compile Include="Validations\GetMethodMethodValidator.cs" />
     <Compile Include="Validations\GetPropertyMethodValidator.cs" />
@@ -85,7 +91,6 @@
     <Compile Include="Highlightings\ReflectionHighlightingBase.cs" />
     <Compile Include="Highlightings\IncorrectBindingFlagsError.cs" />
     <Compile Include="Highlightings\ReflectionMemberNotFoundError.cs" />
-    <Compile Include="ReflectionProblemsAnalyzer.cs" />
     <Compile Include="UseReflectionQuickFix.cs" />
     <Compile Include="XmlDocUtil.cs" />
   </ItemGroup>

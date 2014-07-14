@@ -90,7 +90,6 @@
     <Compile Include="Highlightings\ReflectionHighlightingBase.cs" />
     <Compile Include="Highlightings\IncorrectBindingFlagsError.cs" />
     <Compile Include="Highlightings\ReflectionMemberNotFoundError.cs" />
-    <Compile Include="ReflectionProblemsAnalyzer.cs" />
     <Compile Include="UseReflectionQuickFix.cs" />
     <Compile Include="XmlDocUtil.cs" />
   </ItemGroup>

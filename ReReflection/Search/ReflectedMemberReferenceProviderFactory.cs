@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 
-namespace ReSharper.Reflection.ReferenceProviders
+namespace ReSharper.Reflection.Search
 {
     [ReferenceProviderFactory]
     public class ReflectedMemberReferenceProviderFactory : IReferenceProviderFactory

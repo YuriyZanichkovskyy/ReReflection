@@ -1,22 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using JetBrains.Annotations;
-using JetBrains.Application.Progress;
+using JetBrains.ReSharper.Feature.Services.LinqTools;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.ExtensionsAPI;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Finder;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.ReSharper.Psi.Resolve;
-using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
 
-namespace ReSharper.Reflection.ReferenceProviders
+namespace ReSharper.Reflection.Search
 {
     public class ReflectedMemberReference : TreeReferenceBase<IExpression>, IAccessContext
     {
@@ -55,12 +48,20 @@ namespace ReSharper.Reflection.ReferenceProviders
 
         public override IReference BindTo(IDeclaredElement element)
         {
+            if (GetName() != element.ShortName && _resolveResult.ResolveErrorType != ResolveErrorType.MULTIPLE_CANDIDATES)
+            {
+                CSharpElementFactory instance = CSharpElementFactory.GetInstance(myOwner, true);
+                var elementNameExpression = myOwner.ReplaceBy(instance.CreateExpression("\"$0\"", element.ShortName));
+                return new ReflectedMemberReference(elementNameExpression,
+                    new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResult(element), ResolveErrorType.OK), 
+                    _typeElement);
+            }
             return this;
         }
 
         public override IReference BindTo(IDeclaredElement element, ISubstitution substitution)
         {
-            return this;
+            return BindTo(element);
         }
 
         public override IAccessContext GetAccessContext()
