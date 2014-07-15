@@ -17,5 +17,11 @@ namespace ReSharper.Reflection.Search
         }
 
         public event Action OnChanged;
+
+        protected virtual void OnOnChanged()
+        {
+            Action handler = OnChanged;
+            if (handler != null) handler();
+        }
     }
 }

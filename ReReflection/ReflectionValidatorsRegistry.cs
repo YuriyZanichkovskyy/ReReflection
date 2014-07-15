@@ -25,6 +25,9 @@ namespace ReSharper.Reflection
                 //GetField
                 { Methods.Of<Func<string, FieldInfo>>(() => _T.GetField).XmlDocId(), (m) => new GetFieldMethodValidator(m) },
                 { Methods.Of<Func<string, BindingFlags, FieldInfo>>(() => _T.GetField).XmlDocId(), (m) => new GetFieldMethodValidator(m, 1) },
+                //GetEvent
+                { Methods.Of<Func<string, EventInfo>>(() => _T.GetEvent).XmlDocId(), (m) => new GetEventMethodValidator(m) },
+                { Methods.Of<Func<string, BindingFlags, EventInfo>>(() => _T.GetEvent).XmlDocId(), (m) => new GetEventMethodValidator(m, 1) },
                 //GetMethod
                 { Methods.Of<Func<string, MethodInfo>>(() => _T.GetMethod).XmlDocId(), (m) => new GetMethodMethodValidator(m) },
                 { Methods.Of<Func<string, BindingFlags, MethodInfo>>(() => _T.GetMethod).XmlDocId(), (m) => new GetMethodMethodValidator(m, 1) }
