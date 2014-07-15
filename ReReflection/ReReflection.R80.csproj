@@ -79,6 +79,7 @@
     <Compile Include="Search\ReflectedMemberReferenceProviderFactory.cs" />
     <Compile Include="Search\ReflectedMemberSearcherFactory.cs" />
     <Compile Include="Services\ReflectedTypeHelper.cs" />
+    <Compile Include="Validations\GetEventMethodValidator.cs" />
     <Compile Include="Validations\GetMethodMethodValidator.cs" />
     <Compile Include="Validations\GetPropertyMethodValidator.cs" />
     <Compile Include="Validations\MakeArrayTypeValidator.cs" />
