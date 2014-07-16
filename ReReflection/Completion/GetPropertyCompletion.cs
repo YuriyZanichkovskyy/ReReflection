@@ -41,15 +41,5 @@ namespace ReSharper.Reflection.Completion
                 arguments.Add(argumentTypes);
             }
         }
-
-        private string Typeof(IParameter parameter, ISubstitution substitution)
-        {
-            return string.Format("typeof({0})", substitution.Apply(parameter.Type).GetPresentableName(CSharpLanguage.Instance));
-        }
-
-        private string Typeof(IType type, ISubstitution substitution)
-        {
-            return string.Format("typeof({0})", substitution.Apply(type).GetPresentableName(CSharpLanguage.Instance));
-        }
     }
 }

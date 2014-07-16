@@ -5,6 +5,7 @@ using System.Reflection;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.Util;
 
@@ -18,6 +19,11 @@ namespace ReSharper.Reflection.Completion
         }
 
         protected DeclaredElementType ExpectedMemberType { get; private set; }
+
+        protected virtual bool IncludeNameArgument
+        {
+            get { return true; }
+        }
 
         public void ProcessMembers(CSharpCodeCompletionContext context, GroupedItemsCollector collector, ISymbolTable symbols)
         {
@@ -35,14 +41,18 @@ namespace ReSharper.Reflection.Completion
                     
 
                     IList<string> arguments = new List<string>();
-                    arguments.Add(nameArgument); //always present
+
+                    if (IncludeNameArgument)
+                    {
+                        arguments.Add(nameArgument);
+                    }
 
                     if (NeedsBindingFlags(member))
                     {
                         arguments.Add(GetExpectedBindingFlags(member).GetFullString());
                     }
 
-                    if (symbols.GetSymbolInfos(member.ShortName).HasMultiple()) //additional arguments needs to be provided
+                    if (ShouldProvideMemberSpecificArguments(symbols.GetSymbolInfos(member.ShortName))) //additional arguments needs to be provided
                     {
                         ProvideMemberSpecificArguments(declaredElementInstance, arguments, NeedsBindingFlags(member));
                     }
@@ -58,6 +68,21 @@ namespace ReSharper.Reflection.Completion
                     collector.AddToTop(lookupItem);
                 }
             });
+        }
+
+        protected string Typeof(IParameter parameter, ISubstitution s)
+        {
+            return string.Format("typeof({0})", s.Apply(parameter.Type).GetPresentableName(CSharpLanguage.Instance));
+        }
+
+        protected string Typeof(IType type, ISubstitution substitution)
+        {
+            return string.Format("typeof({0})", substitution.Apply(type).GetPresentableName(CSharpLanguage.Instance));
+        }
+
+        protected virtual bool ShouldProvideMemberSpecificArguments(IList<ISymbolInfo> symbols)
+        {
+            return symbols.HasMultiple();
         }
 
         protected virtual bool IncludeSymbol(DeclaredElementInstance<ITypeMember> member)

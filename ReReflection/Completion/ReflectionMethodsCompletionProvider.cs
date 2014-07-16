@@ -25,6 +25,7 @@ namespace ReSharper.Reflection.Completion
                 { "GetEvent", new MethodSpecificCompletion(CLRDeclaredElementType.EVENT) },
                 { "GetProperty", new GetPropertyCompletion() },
                 { "GetMember", new GetMemberCompletion()},
+                //{ "GetConstructor", new GetConstructorCompletion()}
             };
 
 
