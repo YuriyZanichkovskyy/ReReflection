@@ -59,10 +59,6 @@ namespace ReSharper.Reflection.Search
                         new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResult(element), ResolveErrorType.OK),
                         _typeElement);               
                 }
-                else if (_resolveResult.ResolveErrorType != ResolveErrorType.MULTIPLE_CANDIDATES)
-                {
-
-                }
             }
             return this;
         }
