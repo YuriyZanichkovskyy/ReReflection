@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 using JetBrains.ReSharper.Feature.Services.LinqTools;
 using JetBrains.ReSharper.Psi;
@@ -48,13 +49,20 @@ namespace ReSharper.Reflection.Search
 
         public override IReference BindTo(IDeclaredElement element)
         {
-            if (GetName() != element.ShortName && _resolveResult.ResolveErrorType != ResolveErrorType.MULTIPLE_CANDIDATES)
+            if (GetName() != element.ShortName)
             {
                 CSharpElementFactory instance = CSharpElementFactory.GetInstance(myOwner, true);
-                var elementNameExpression = myOwner.ReplaceBy(instance.CreateExpression("\"$0\"", element.ShortName));
-                return new ReflectedMemberReference(elementNameExpression,
-                    new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResult(element), ResolveErrorType.OK), 
-                    _typeElement);
+                if (_resolveResult.ResolveErrorType != ResolveErrorType.OK)
+                {
+                    var elementNameExpression = myOwner.ReplaceBy(instance.CreateExpression("\"$0\"", element.ShortName));
+                    return new ReflectedMemberReference(elementNameExpression,
+                        new ResolveResultWithInfo(ResolveResultFactory.CreateResolveResult(element), ResolveErrorType.OK),
+                        _typeElement);               
+                }
+                else if (_resolveResult.ResolveErrorType != ResolveErrorType.MULTIPLE_CANDIDATES)
+                {
+
+                }
             }
             return this;
         }

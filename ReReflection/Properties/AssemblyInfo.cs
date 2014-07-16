@@ -17,9 +17,9 @@ using JetBrains.Application.PluginSupport;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: ActionsXml("ReReflection.Actions.xml")]
-
 // The following information is displayed by ReSharper in the Plugins dialog
 [assembly: PluginTitle("ReReflection")]
 [assembly: PluginDescription("A set of refactoring for Reflection API")]
 [assembly: PluginVendor("Yuriy Zanichkovskyy")]
+
+[assembly: ActionsXml("ReSharper.Reflection.resources.actions.xml")]
