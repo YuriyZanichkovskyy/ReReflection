@@ -55,9 +55,12 @@ namespace ReSharper.Reflection.Services
                         IType[] parameters;
                         if (GetTypeParameters(methodInvocationExpression, out parameters))
                         {
-                            return new ReflectedTypeResolveResult(TypeFactory.CreateType(resolvedType.TypeElement, parameters), 
-                                ReflectedTypeResolution.ExactMakeGeneric);
+                            return
+                                new ReflectedTypeResolveResult(
+                                    TypeFactory.CreateType(resolvedType.TypeElement, parameters),
+                                    ReflectedTypeResolution.ExactMakeGeneric);
                         }
+                        return resolvedType;
                     }
                 }
                 else if (IsReflectionTypeMethod(methodInvocationExpression, "GetType"))

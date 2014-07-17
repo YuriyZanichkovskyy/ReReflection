@@ -10,7 +10,8 @@ The plugin is aimed to simplify work with .NET reflection API by providing quick
 1. [Writing a ReSharper Plugin: Quick Fixes](http://elekslabs.com/2013/10/writing-resharper-plugin-quick-fixes.html)
 2. [Writing a ReSharper Plugin: Problem Analyzers](http://elekslabs.com/2014/05/writing-a-resharper-plugin-problem-analyzers.html)
 3. [Writing a ReSharper Plugin: Auto-completion] (http://elekslabs.com/2014/06/writing-a-resharper-plugin-auto-completion.html)
-4. And many more...
+4. Writing a ReSharper Plugin: Search and Navigation
+5. And many more...
 
 ## Usages
 

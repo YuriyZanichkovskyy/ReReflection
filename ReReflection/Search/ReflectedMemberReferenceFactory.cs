@@ -33,7 +33,8 @@ namespace ReSharper.Reflection.Search
             var argument = element as ICSharpArgument;
             if (argument != null && argument.Expression != null && argument.Expression.IsConstantValue())
             {
-                return argument.Expression.ConstantValue.Value != null && names.Contains(argument.Expression.ConstantValue.Value.ToString());
+                return argument.Expression.ConstantValue.Value != null 
+                    && names.Contains(argument.Expression.ConstantValue.Value.ToString());
             }
             return false;
         }
