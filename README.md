@@ -17,6 +17,10 @@ The plugin is aimed to simplify work with .NET reflection API by providing quick
 
 This section describes basic plugin usages with examples.
 
+### Search and Navigation
+
+![](https://github.com/YuriyZanichkovskyy/ReReflection/raw/master/Images/search_navigation.png)
+
 ### Quick-fixes
 
 #### "Use reflection"
