@@ -51,8 +51,7 @@ namespace ReSharper.Reflection.Completion
                     if (IsCompletionRegisteredForMethod(method, out methodSpecificCompletion))
                     {
                         var reflectedType = ReflectedTypeHelper.ResolveReflectedType(invocationExpression);
-                        if (reflectedType.ResolvedAs == ReflectedTypeResolution.Exact 
-                            || reflectedType.ResolvedAs == ReflectedTypeResolution.ExactMakeGeneric)
+                        if (reflectedType.ResolvedAs != ReflectedTypeResolution.NotResolved)
                         {
                             methodSpecificCompletion.ProcessMembers(context, collector, 
                                 reflectedType.Type.GetSymbolTable(context.PsiModule).Filter(new ExtensionMethodsFilter()));

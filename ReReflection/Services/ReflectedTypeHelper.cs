@@ -63,13 +63,22 @@ namespace ReSharper.Reflection.Services
                         return resolvedType;
                     }
                 }
-                else if (IsReflectionTypeMethod(methodInvocationExpression, "GetType"))
+                else if (methodInvocationExpression.InvocationExpressionReference.GetName() == "GetType")
                 {
                     var qualifier = ((IReferenceExpression) methodInvocationExpression.InvokedExpression).QualifierExpression;
                     if (qualifier != null)
                     {
 // ReSharper disable once AssignNullToNotNullAttribute
                         return new ReflectedTypeResolveResult(qualifier.GetExpressionType().ToIType(), ReflectedTypeResolution.BaseClass);
+                    }
+                    else
+                    {
+                        var typeDeclaration = methodInvocationExpression.GetContainingTypeDeclaration();
+                        if (typeDeclaration != null && typeDeclaration.DeclaredElement != null)
+                        {
+                            var type = TypeFactory.CreateType(typeDeclaration.DeclaredElement);
+                            return new ReflectedTypeResolveResult(type, ReflectedTypeResolution.BaseClass);
+                        }
                     }
                 }
                 else if (IsReflectionTypeMethod(methodInvocationExpression, "MakeArrayType"))

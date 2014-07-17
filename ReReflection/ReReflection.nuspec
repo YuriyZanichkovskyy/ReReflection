@@ -16,6 +16,7 @@
       v.0.2.0
       - Supported navigations (Ctrl + Click), Find Usages, rename refactorings for reflected members
       - Auto-importing "System.Reflection" when completed with ReflectedMemberLookupItem
+      - auto-completion for reflected type from GetType
       - enabled validations even if generic arguments where not resolved
       v.0.1.0
       - Improved resolution logic for reflected type.
