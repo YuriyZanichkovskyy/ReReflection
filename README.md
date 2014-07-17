@@ -19,7 +19,7 @@ This section describes basic plugin usages with examples.
 
 ### Search and Navigation
 
-![](https://github.com/YuriyZanichkovskyy/ReReflection/raw/master/Images/search_navigation.png)
+![](https://github.com/YuriyZanichkovskyy/ReReflection/raw/master/Images/search_navigation.gif)
 
 ### Quick-fixes
 
