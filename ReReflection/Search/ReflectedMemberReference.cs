@@ -52,7 +52,7 @@ namespace ReSharper.Reflection.Search
             if (GetName() != element.ShortName)
             {
                 CSharpElementFactory instance = CSharpElementFactory.GetInstance(myOwner, true);
-                if (_resolveResult.ResolveErrorType != ResolveErrorType.OK)
+                if (_resolveResult.ResolveErrorType == ResolveErrorType.OK)
                 {
                     var elementNameExpression = myOwner.ReplaceBy(instance.CreateExpression("\"$0\"", element.ShortName));
                     return new ReflectedMemberReference(elementNameExpression,
