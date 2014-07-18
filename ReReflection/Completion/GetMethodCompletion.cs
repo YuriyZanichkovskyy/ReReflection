@@ -41,11 +41,11 @@ namespace ReSharper.Reflection.Completion
             }
         }
 
-        protected override bool IncludeSymbol(DeclaredElementInstance<ITypeMember> member)
-        {
-            var method = (IMethod)member.Element;
-            return method.TypeParameters.Count == 0;
-        }
+        //protected override bool IncludeSymbol(DeclaredElementInstance<ITypeMember> member)
+        //{
+        //    var method = (IMethod)member.Element;
+        //    return method.TypeParameters.Count == 0;
+        //}
 
         
     }

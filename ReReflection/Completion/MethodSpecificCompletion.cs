@@ -57,11 +57,24 @@ namespace ReSharper.Reflection.Completion
                         ProvideMemberSpecificArguments(declaredElementInstance, arguments, NeedsBindingFlags(member));
                     }
 
-                    var lookupItem = new ReflectionMemberLookupItem(symbol.ShortName,
-                        string.Join(", ", arguments.ToArray()),
-                        declaredElementInstance,
-                        context,
-                        context.BasicContext.LookupItemsOwner);
+                    ReflectionMemberLookupItem lookupItem;
+                    if (member is IMethod && ((IMethod)member).TypeParameters.Count != 0)
+                    {
+                        lookupItem = new ReflectionGenericMethodLookupItem(symbol.ShortName,
+                            declaredElementInstance,
+                            context,
+                            context.BasicContext.LookupItemsOwner);
+                    }
+                    else
+                    {
+                        lookupItem = new ReflectionMemberLookupItem(symbol.ShortName,
+                            string.Join(", ", arguments.ToArray()),
+                            declaredElementInstance,
+                            context,
+                            context.BasicContext.LookupItemsOwner);
+                    }
+
+                    
 
                     lookupItem.InitializeRanges(context.CompletionRanges, context.BasicContext);
                     lookupItem.OrderingString = string.Format("__A_MEMBER_{0}", symbol.ShortName); //

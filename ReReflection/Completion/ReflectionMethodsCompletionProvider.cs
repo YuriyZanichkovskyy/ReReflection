@@ -54,7 +54,8 @@ namespace ReSharper.Reflection.Completion
                         if (reflectedType.ResolvedAs != ReflectedTypeResolution.NotResolved)
                         {
                             methodSpecificCompletion.ProcessMembers(context, collector, 
-                                reflectedType.Type.GetSymbolTable(context.PsiModule).Filter(new ExtensionMethodsFilter()));
+                                reflectedType.Type.GetSymbolTable(context.PsiModule)
+                                .Filter(new ExtensionMethodsFilter(reflectedType.TypeElement)));
                             collector.AddFilter(new ReflectionMembersPreference());
                         }
                     }
@@ -87,10 +88,23 @@ namespace ReSharper.Reflection.Completion
 
         private class ExtensionMethodsFilter : SimpleSymbolInfoFilter
         {
+            private readonly ITypeElement _completionTarget;
+
+            public ExtensionMethodsFilter(ITypeElement completionTarget)
+            {
+                _completionTarget = completionTarget;
+            }
+
             public override bool Accepts(ISymbolInfo datum)
             {
                 var method = datum.GetDeclaredElement() as IMethod;
-                return method == null || !method.IsExtensionMethod;
+                if (method != null)
+                {
+                    var isSameType = Equals(method.GetContainingType(), _completionTarget);
+                    return isSameType || !method.IsExtensionMethod;
+                }
+
+                return true;
             }
 
             public override ResolveErrorType ErrorType

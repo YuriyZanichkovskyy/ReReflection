@@ -29,6 +29,11 @@ namespace ReSharper.Reflection.Completion
             _context = context;
         }
 
+        protected CSharpCodeCompletionContext Context
+        {
+            get { return _context; }
+        }
+
         protected override string GetText()
         {
             return _code;
@@ -42,8 +47,8 @@ namespace ReSharper.Reflection.Completion
             using (var transactionCookie = new PsiTransactionCookie(psiServices, DefaultAction.Rollback, "Lookup item"))
             {
                 ImportHelper.AddMissingNamespaceImport(
-                    (ICSharpTypeAndNamespaceHolderDeclaration) _context.BasicContext.File,
-                    CSharpElementFactory.GetInstance(_context.PsiModule), "System.Reflection");
+                    (ICSharpTypeAndNamespaceHolderDeclaration) Context.BasicContext.File,
+                    CSharpElementFactory.GetInstance(Context.PsiModule), "System.Reflection");
                 psiServices.Caches.Update();
                 transactionCookie.Commit();
             }
