@@ -57,6 +57,7 @@
     <Compile Include="Completion\GetMethodCompletion.cs" />
     <Compile Include="Completion\GetPropertyCompletion.cs" />
     <Compile Include="Completion\MethodSpecificCompletion.cs" />
+    <Compile Include="Completion\ReflectionGenericMethodLookupItem.cs" />
     <Compile Include="Completion\ReflectionMemberLookupItem.cs" />
     <Compile Include="Completion\ReflectionMethodsCompletionProvider.cs" />
     <Compile Include="EnumExtensions.cs" />
