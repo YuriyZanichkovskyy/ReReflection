@@ -9,7 +9,7 @@ using JetBrains.ReSharper.Psi.Search;
 namespace ReSharper.Reflection.Search
 {
     [OccurenceProvider(Priority = 1)]
-    public class ReflectedMemberOccuranceProvider : IOccurenceProvider
+    public class ReflectedMemberOccurenceProvider : IOccurenceProvider
     {
         public IOccurence MakeOccurence(FindResult findResult)
         {

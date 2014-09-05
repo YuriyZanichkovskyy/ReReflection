@@ -72,7 +72,7 @@
     <Compile Include="QuickFixes\DidYouMeanQuickFix.cs" />
     <Compile Include="QuickFixes\DidYouMeanQuickFixBase.cs" />
     <Compile Include="QuickFixes\RemoveBindingFlagsQuickFix.cs" />
-    <Compile Include="Search\ReflectedMemberOccuranceProvider.cs" />
+    <Compile Include="Search\ReflectedMemberOccurenceProvider.cs" />
     <Compile Include="Search\ReflectedMemberOccurence.cs" />
     <Compile Include="Search\ReflectedMemberOccurenceKindProvider.cs" />
     <Compile Include="Search\ReflectedMemberReference.cs" />
