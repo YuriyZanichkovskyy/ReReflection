@@ -61,5 +61,11 @@ namespace ReReflection.Tests
         {
             DoTestFiles("Case6.cs");
         }
+
+        [Test]
+        public void Test07()
+        {
+            DoTestFiles("Case7.cs");
+        }
     }
 }

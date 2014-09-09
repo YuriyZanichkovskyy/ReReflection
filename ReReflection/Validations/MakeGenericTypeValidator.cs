@@ -26,7 +26,9 @@ namespace ReSharper.Reflection.Validations
             if (resolvedType.TypeElement == null)
                 return null;
 
-            if (resolvedType.TypeElement.TypeParameters.Count == 0)
+            int genericArgumentsCount = GetGenericArgumentsCount(resolvedType.TypeElement);
+
+            if (genericArgumentsCount == 0)
             {
                 return new IncorrectMakeGenericTypeHighlighting(reference,
                     string.Format("Type '{0}' is not a generic type.", 
@@ -41,22 +43,34 @@ namespace ReSharper.Reflection.Validations
             }
 
             int typeArgumentCount = invocation.Arguments.Count;
+            bool isArgumentPassedAsParams = false;
+
             if (typeArgumentCount != 0)
             {
                 var typeParameters = invocation.Arguments[0].Expression as IArrayCreationExpression;
 
                 if (typeParameters != null && typeParameters.ArrayInitializer != null)
                 {
-                    if (typeParameters.ArrayInitializer.ElementInitializers.Count != resolvedType.TypeElement.TypeParameters.Count)
+                    if (typeParameters.ArrayInitializer.ElementInitializers.Count != genericArgumentsCount)
                     {
                         return new IncorrectMakeGenericTypeHighlighting(invocation.Arguments[0],
                             string.Format("Incorrect count of type parameters for type {0}.",
                             resolvedType.Type.GetPresentableName(CSharpLanguage.Instance)));
                     }
                 }
+
+                var argumentExpression = invocation.Arguments[0].Expression;
+                if (argumentExpression != null && argumentExpression.Type().IsType())
+                {
+                    isArgumentPassedAsParams = true;
+                }
+            }
+            else
+            {
+                isArgumentPassedAsParams = true;
             }
             
-            if (typeArgumentCount != resolvedType.TypeElement.TypeParameters.Count)
+            if (isArgumentPassedAsParams && typeArgumentCount != genericArgumentsCount)
             {
                 var offset = invocation.LPar.GetTreeStartOffset();
                 var treeTextRange = new TreeTextRange(offset, invocation.RPar.GetTreeEndOffset());
@@ -67,6 +81,19 @@ namespace ReSharper.Reflection.Validations
             }
 
             return null;
+        }
+
+        private int GetGenericArgumentsCount(ITypeElement typeElement)
+        {
+            int count = 0;
+            
+            while (typeElement != null)
+            {
+                count += typeElement.TypeParameters.Count;
+                typeElement = typeElement.GetContainingType();
+            }
+
+            return count;
         }
 
         private bool IsValidTreeTextRange(TreeTextRange range)
