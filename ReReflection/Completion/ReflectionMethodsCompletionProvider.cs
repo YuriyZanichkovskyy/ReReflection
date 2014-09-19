@@ -1,15 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
+using JetBrains.ReSharper.Feature.Services.CSharp.RearrangeCode;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Parsing;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.Psi.Util;
 using ReSharper.Reflection.Services;
 
 namespace ReSharper.Reflection.Completion
@@ -17,6 +22,9 @@ namespace ReSharper.Reflection.Completion
     [Language(typeof(CSharpLanguage))]
     public class ReflectionMethodsCompletionProvider : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
     {
+        private static System.Type TypeMembersSymbolsTableType =
+            typeof (ResolveUtil).GetNestedType("TypeMembersSymbolTable", BindingFlags.NonPublic);
+
         private readonly IDictionary<string, MethodSpecificCompletion> _completionForMethods = 
             new Dictionary<string, MethodSpecificCompletion>()
             {
@@ -25,7 +33,7 @@ namespace ReSharper.Reflection.Completion
                 { "GetEvent", new MethodSpecificCompletion(CLRDeclaredElementType.EVENT) },
                 { "GetProperty", new GetPropertyCompletion() },
                 { "GetMember", new GetMemberCompletion()},
-                //{ "GetConstructor", new GetConstructorCompletion()}
+                { "GetConstructor", new GetConstructorCompletion()}
             };
 
 
@@ -53,9 +61,20 @@ namespace ReSharper.Reflection.Completion
                         var reflectedType = ReflectedTypeHelper.ResolveReflectedType(invocationExpression);
                         if (reflectedType.ResolvedAs != ReflectedTypeResolution.NotResolved)
                         {
-                            methodSpecificCompletion.ProcessMembers(context, collector, 
-                                reflectedType.Type.GetSymbolTable(context.PsiModule)
-                                .Filter(new ExtensionMethodsFilter(reflectedType.TypeElement)));
+                            var symbols = reflectedType.Type.GetSymbolTable(context.PsiModule)
+                                .Filter(new ExtensionMethodsFilter(reflectedType.TypeElement));
+
+                            if (reflectedType.ResolvedAs == ReflectedTypeResolution.Exact
+                                || reflectedType.ResolvedAs == ReflectedTypeResolution.ExactMakeGeneric)
+                            {
+                                //merge substituted constructors
+                                var constructorsSymbols = (ISymbolTable)Activator.CreateInstance(TypeMembersSymbolsTableType, 
+                                    new object[] { reflectedType.TypeElement, ((IDeclaredType)reflectedType.Type).GetSubstitution(), 
+                                    reflectedType.TypeElement.Constructors.Where(c => !c.IsStatic), 0, null });
+                                symbols = symbols.Merge(constructorsSymbols);
+                            }
+
+                            methodSpecificCompletion.ProcessMembers(context, collector, symbols);
                             collector.AddFilter(new ReflectionMembersPreference());
                         }
                     }

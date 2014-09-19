@@ -16,9 +16,9 @@ namespace ReSharper.Reflection.Completion
 
         protected override void ProvideMemberSpecificArguments(DeclaredElementInstance<ITypeMember> member, IList<string> arguments, bool requiresBindingFlags)
         {
-            var method = (IMethod)member.Element;
+            var constructor = (IConstructor)member.Element;
             string argumentTypes = string.Format("new Type[] {{ {0} }}",
-                string.Join(", ", method.Parameters
+                string.Join(", ", constructor.Parameters
                 .Select(p => Typeof(p, member.Substitution)))); //
 
             if (requiresBindingFlags)
