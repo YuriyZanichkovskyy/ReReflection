@@ -30,7 +30,13 @@ namespace ReSharper.Reflection
                 { Methods.Of<Func<string, BindingFlags, EventInfo>>(() => _T.GetEvent).XmlDocId(), (m) => new GetEventMethodValidator(m, 1) },
                 //GetMethod
                 { Methods.Of<Func<string, MethodInfo>>(() => _T.GetMethod).XmlDocId(), (m) => new GetMethodMethodValidator(m) },
-                { Methods.Of<Func<string, BindingFlags, MethodInfo>>(() => _T.GetMethod).XmlDocId(), (m) => new GetMethodMethodValidator(m, 1) }
+                { Methods.Of<Func<string, BindingFlags, MethodInfo>>(() => _T.GetMethod).XmlDocId(), (m) => new GetMethodMethodValidator(m, 1) },
+
+                //Enum
+                { Methods.Of<Func<string[]>>(() => _T.GetEnumNames).XmlDocId(), (m) => new GetEnumXMethodValidator(m) },
+                { Methods.Of<Func<object, string>>(() => _T.GetEnumName).XmlDocId(), (m) => new GetEnumXMethodValidator(m) },
+                { Methods.Of<Func<Type>>(() => _T.GetEnumUnderlyingType).XmlDocId(), (m) => new GetEnumXMethodValidator(m) },
+                { Methods.Of<Func<Array>>(() => _T.GetEnumValues).XmlDocId(), (m) => new GetEnumXMethodValidator(m) },
             };
 
         public static ReflectionTypeMethodValidatorBase GetValidator(IMethod method)
