@@ -5,13 +5,21 @@ using System.Text;
 using JetBrains.Application;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Util;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.LiveTemplates;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Hotspots;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.LiveTemplates;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Templates;
+
+#if R9
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Util;
+using JetBrains.ReSharper.Resources.Shell;
+#else
 using JetBrains.ReSharper.LiveTemplates.Templates;
+#endif
+
+
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -20,6 +28,7 @@ using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Resx.Utils;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Refactorings.CSharp.ExtractMethod2.Common;
+
 using JetBrains.TextControl;
 using JetBrains.TextControl.Util;
 using JetBrains.Util;

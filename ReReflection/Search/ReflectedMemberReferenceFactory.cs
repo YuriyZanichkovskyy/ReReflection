@@ -28,7 +28,11 @@ namespace ReSharper.Reflection.Search
             return new IReference[0];
         }
 
+#if R9
+        public bool HasReference(ITreeNode element, IReferenceNameContainer names)
+#else
         public bool HasReference(ITreeNode element, ICollection<string> names)
+#endif
         {
             var argument = element as ICSharpArgument;
             if (argument != null && argument.Expression != null && argument.Expression.IsConstantValue())
@@ -38,5 +42,6 @@ namespace ReSharper.Reflection.Search
             }
             return false;
         }
+
     }
 }

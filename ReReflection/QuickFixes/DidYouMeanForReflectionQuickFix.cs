@@ -10,6 +10,12 @@ using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Resolve;
 using ReSharper.Reflection.Highlightings;
 
+#if R9
+using JetBrains.ReSharper.Feature.Services.QuickFixes;
+#else
+using JetBrains.ReSharper.Intentions.Extensibility;
+#endif
+
 namespace ReSharper.Reflection.QuickFixes
 {
     [QuickFix]

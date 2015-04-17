@@ -5,7 +5,13 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.LinqTools;
+
+#if R9
+using JetBrains.ReSharper.Feature.Services.QuickFixes;
+#else
 using JetBrains.ReSharper.Intentions.Extensibility;
+#endif
+
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Impl;
@@ -15,10 +21,11 @@ using JetBrains.ReSharper.Psi.Util;
 using JetBrains.TextControl;
 using JetBrains.Util;
 
+
 namespace ReSharper.Reflection
 {
     [QuickFix()]
-    public class UseReflectionQuickFix : QuickFixBase
+    public class UseReflectionQuickFix : QuickFixBase, IQuickFix
     {
         private PsiLanguageType _languageForPresentation;
         private readonly AccessRightsError _error;

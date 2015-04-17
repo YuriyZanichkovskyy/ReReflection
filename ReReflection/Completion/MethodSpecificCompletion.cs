@@ -2,6 +2,9 @@
 using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Reflection;
+#if R9
+using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems;
+#endif
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;

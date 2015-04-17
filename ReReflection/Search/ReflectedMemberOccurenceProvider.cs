@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using JetBrains.ReSharper.Feature.Services.Navigation.Search;
 using JetBrains.ReSharper.Feature.Services.Occurences;
+#if !R9
+using JetBrains.ReSharper.Feature.Services.Navigation.Search;
+#endif
 using JetBrains.ReSharper.Psi.Search;
 
 namespace ReSharper.Reflection.Search

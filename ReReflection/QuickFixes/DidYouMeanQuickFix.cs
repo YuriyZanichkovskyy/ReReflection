@@ -11,6 +11,12 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve.Filters;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Util;
 
+#if R9
+using JetBrains.ReSharper.Feature.Services.QuickFixes;
+#else
+using JetBrains.ReSharper.Intentions.Extensibility;
+#endif
+
 namespace ReSharper.Reflection.QuickFixes
 {
     [QuickFix]

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 namespace ReSharper.Reflection.Highlightings

@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Navigation.Search;
+using JetBrains.ReSharper.Feature.Services.Occurences;
+#if !R9
 using JetBrains.ReSharper.Feature.Services.Occurences.OccurenceKindProviders;
+using JetBrains.ReSharper.Feature.Services.Navigation.Search;
+
+#endif
 using JetBrains.Util;
 
 namespace ReSharper.Reflection.Search

@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection", "ReReflection\ReReflection.csproj", "{A6F3C632-1348-41B7-A3E7-2A43416A5748}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.Tests", "ReReflection.Tests\ReReflection.Tests.csproj", "{3403270F-EBD2-437A-9242-175108E5B6E2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SDKs", "SDKs", "{AA9623BB-D4DD-4593-A75A-22A98C94453F}"
 EndProject
@@ -15,6 +15,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.Tests.R80", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.Tests.R81", "ReReflection.Tests\ReReflection.Tests.R81.csproj", "{E95F40CF-EEC8-4852-AAE5-40CF77B81837}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DBE9BE5B-94B0-4979-AB80-9763487110BD}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.R82", "ReReflection\ReReflection.R82.csproj", "{EC200B72-0FED-4AC1-A988-9E9B07A465A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReReflection.Tests.R82", "ReReflection.Tests\ReReflection.Tests.R82.csproj", "{C2F11F93-8ACA-4E15-8AD3-72E6F1072104}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,10 +36,6 @@ Global
 		{A6F3C632-1348-41B7-A3E7-2A43416A5748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6F3C632-1348-41B7-A3E7-2A43416A5748}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6F3C632-1348-41B7-A3E7-2A43416A5748}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3403270F-EBD2-437A-9242-175108E5B6E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3403270F-EBD2-437A-9242-175108E5B6E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3403270F-EBD2-437A-9242-175108E5B6E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3403270F-EBD2-437A-9242-175108E5B6E2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A8ABD05-C7E2-40D3-AC86-70CFF3F5F621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A8ABD05-C7E2-40D3-AC86-70CFF3F5F621}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A8ABD05-C7E2-40D3-AC86-70CFF3F5F621}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +52,14 @@ Global
 		{E95F40CF-EEC8-4852-AAE5-40CF77B81837}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E95F40CF-EEC8-4852-AAE5-40CF77B81837}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E95F40CF-EEC8-4852-AAE5-40CF77B81837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC200B72-0FED-4AC1-A988-9E9B07A465A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC200B72-0FED-4AC1-A988-9E9B07A465A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC200B72-0FED-4AC1-A988-9E9B07A465A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC200B72-0FED-4AC1-A988-9E9B07A465A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2F11F93-8ACA-4E15-8AD3-72E6F1072104}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2F11F93-8ACA-4E15-8AD3-72E6F1072104}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2F11F93-8ACA-4E15-8AD3-72E6F1072104}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2F11F93-8ACA-4E15-8AD3-72E6F1072104}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,5 +69,7 @@ Global
 		{5FB0F146-B1DD-4A29-BE43-CBE434A210E2} = {AA9623BB-D4DD-4593-A75A-22A98C94453F}
 		{ECE62853-3E9E-480C-B06A-07DE9AA16EB9} = {AA9623BB-D4DD-4593-A75A-22A98C94453F}
 		{E95F40CF-EEC8-4852-AAE5-40CF77B81837} = {AA9623BB-D4DD-4593-A75A-22A98C94453F}
+		{EC200B72-0FED-4AC1-A988-9E9B07A465A8} = {AA9623BB-D4DD-4593-A75A-22A98C94453F}
+		{C2F11F93-8ACA-4E15-8AD3-72E6F1072104} = {AA9623BB-D4DD-4593-A75A-22A98C94453F}
 	EndGlobalSection
 EndGlobal

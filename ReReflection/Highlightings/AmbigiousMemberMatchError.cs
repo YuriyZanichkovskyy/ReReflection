@@ -1,5 +1,11 @@
 ﻿using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Daemon;
+#if R9
+using JetBrains.ReSharper.Feature.Services.Daemon;
+#else
+
+#endif
+
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 

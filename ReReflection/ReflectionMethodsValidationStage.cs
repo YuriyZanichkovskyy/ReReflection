@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.ReSharper.Feature.Services.Daemon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,14 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Daemon.Stages;
 using JetBrains.ReSharper.Daemon.UsageChecking;
+
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using ReSharper.Reflection.Services;
+
+#if R9
+using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
+#endif
 
 namespace ReSharper.Reflection
 {

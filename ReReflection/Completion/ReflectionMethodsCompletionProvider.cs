@@ -4,6 +4,10 @@ using System.Linq;
 using System.Reflection;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
+#if R9
+using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems;
+using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems.Preference; 
+#endif
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.CSharp.RearrangeCode;
 using JetBrains.ReSharper.Feature.Services.Lookup;
@@ -15,6 +19,7 @@ using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;
 using JetBrains.ReSharper.Psi.Resolve;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
+using JetBrains.Util;
 using ReSharper.Reflection.Services;
 
 namespace ReSharper.Reflection.Completion
@@ -91,10 +96,22 @@ namespace ReSharper.Reflection.Completion
 
         private class ReflectionMembersPreference : ILookupItemsPreference
         {
+            
+#if R9
+            public IEnumerable<Pair<ILookupItem, int>> FilterItems(string prefix, ICollection<Pair<ILookupItem, int>> items)
+            {
+                return items.Where(i => i.First is ReflectionMemberLookupItem);
+            }
+
+            public void MergeWith(ILookupItemsPreference otherPreference)
+            {
+            }
+#else
             public IEnumerable<ILookupItem> FilterItems(ICollection<ILookupItem> items)
             {
                 return items.OfType<ReflectionMemberLookupItem>();
             }
+#endif
 
             public int Order
             {

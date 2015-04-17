@@ -1,6 +1,8 @@
 using System.Reflection;
 using JetBrains.ActionManagement;
+#if !R9
 using JetBrains.Application.PluginSupport;
+#endif
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -18,8 +20,10 @@ using JetBrains.Application.PluginSupport;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 // The following information is displayed by ReSharper in the Plugins dialog
+#if !R9
 [assembly: PluginTitle("ReReflection")]
 [assembly: PluginDescription("A set of refactoring for Reflection API")]
 [assembly: PluginVendor("Yuriy Zanichkovskyy")]
+#endif
 
 [assembly: ActionsXml("ReSharper.Reflection.resources.actions.xml")]

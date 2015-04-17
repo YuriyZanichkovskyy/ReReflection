@@ -2,7 +2,11 @@ using System;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
+#if R9
+using JetBrains.ReSharper.Feature.Services.QuickFixes;
+#else
 using JetBrains.ReSharper.Intentions.Extensibility;
+#endif
 using JetBrains.TextControl;
 using JetBrains.Util;
 using ReSharper.Reflection.Highlightings;

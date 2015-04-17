@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
 using JetBrains.ActivityCollector;
-using JetBrains.ReSharper.Features.Browsing.Resources;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Resolve;

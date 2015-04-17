@@ -68,10 +68,18 @@ namespace ReSharper.Reflection.Search
             return new string[0];
         }
 
+#if R9
+        public IEnumerable<RelatedDeclaredElement> GetRelatedDeclaredElements(IDeclaredElement element)
+        {
+            return new RelatedDeclaredElement[0];
+        }
+#else
+
         public IEnumerable<Pair<IDeclaredElement, Predicate<FindResult>>> GetRelatedDeclaredElements(IDeclaredElement element)
         {
             return new Pair<IDeclaredElement, Predicate<FindResult>>[0];
         }
+#endif
 
         public JetTuple<ICollection<IDeclaredElement>, Predicate<IFindResultReference>, bool> GetDerivedFindRequest(IFindResultReference result)
         {
